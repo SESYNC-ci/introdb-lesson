@@ -1,0 +1,16 @@
+# Site settings
+
+title: "The Landscape of Spatial Data Tools"
+email: "cyberhelp@sesync.org"
+description: "Introduction to the principles, and the open source stack, underlying geospatial analysis."
+baseurl: "/basic-osgeo-lesson"
+
+# Jekyll Settings
+
+markdown: kramdown
+collections:
+  - slides
+
+# List files from _slide/ in order here (without the extension)
+slide_sorter:
+  - title

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+	
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>{{ site.title }}</title>
+	<meta name="description" content="{{ site.description }}">
+	
+	<link rel="stylesheet" href="{{ site.baseurl }}/reveal.js/css/reveal.css">
+	<link rel="stylesheet" href="{{ site.baseurl }}/reveal.js/css/theme/sky.css" id="theme">
+	
+	<!-- For syntax highlighting -->
+	<!-- <link rel="stylesheet" href="{{ site.baseurl }}/reveal.js/lib/css/zenburn.css"> -->
+	
+	<!--[if lt IE 9]>
+            <script src="{{ site.baseurl }}/reveal.js/lib/js/html5shiv.js"></script>
+	<![endif]-->
+	
+	<style type="text/css">
+	 img + br + em {
+	     font-size: 0.5em !Important;
+	 }
+
+	 .reveal section p {
+	     margin-top: 2em;
+	     margin-bottom: 1em;
+	 }
+	 
+	 .vertical-align img {
+	     vertical-align: middle;
+	 }
+	 
+	 .input pre {
+	     background-color: #EBECE4;
+	 }
+	 
+	 .output pre {
+	     background-color: #FFFFFF;
+	 }
+	</style>
+
+    </head>
+    
+    <body>
+	
+	<div class="reveal">
+      
+	    <div class="slides">
+
+		{{ content }}
+	
+	    </div>
+      
+	</div>
+
+	<script src="{{ site.baseurl }}/reveal.js/lib/js/head.min.js"></script>
+	<script src="{{ site.baseurl }}/reveal.js/js/reveal.js"></script>
+	<script>
+	 Reveal.initialize({
+	     width: 1920,
+	     height: 1200,
+	     margin: 0.2,
+	     transition: 'default',
+	 });
+	 
+	</script>
+	
+    </body>
+    
+</html>
