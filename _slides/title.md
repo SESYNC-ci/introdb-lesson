@@ -3,7 +3,7 @@
 
 # Data Storage and Access for All
 
-Instructor: Mary Shelly
+Instructor: Mary Shelley
 
 ## Rough Outline
 
