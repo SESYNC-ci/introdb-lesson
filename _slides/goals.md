@@ -7,7 +7,7 @@
 - Discover relational databases
 - Meet Structured Query Language (SQL)
 - Recognize the value of typed data
-- See spatial extensions in action
+- Glimpse spatial extensions in action
 
 <!--split-->
 	
@@ -15,7 +15,5 @@
 
 - Access a database on a PostgreSQL server
 - Create a table and view table definitions
-- Copy data between tables
-- Alter a row in an existing table	
-- Join tables on a single column
-- Connect to a database programatically
+- Insert records one at a time into a table
+- Alter the definition of an existing table

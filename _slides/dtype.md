@@ -53,18 +53,26 @@ A popular extension for PostgreSQL is PostGIS, which adds spatially aware data t
 PostGIS functions allow you to query your database on spatial relations, which act sort of like foreign key relationships.
 Jumping way ahead of ourselves, let's see an example of what PostGIS can do.
 
-Log out of the `portal` database, and log in to the database `postgis_in_action`.
-Table `restaurants` has a point geometry field, and table `highways` has a linestring geometry.
-Which franchises in Maryland are within 500 meters of a highway?
+Log out of the `portal` database, and log in to the database `postgis_in_action` then select `ch01` from the Schema drop-down menu.
 
-[//]: # " SET search_path TO myschema,public; "
+Question
+: Look at the different tables and find the fields with spatial data types. What type does `restaurants` have, and what type does `highways` have?
+
+<!--split-->
+
+The following query will list the restaurant franchises in Maryland that are within 500 meters of a highway.
 
 ~~~
 SELECT franchise, name
-FROM restaurants
-JOIN highways on ST_DWithin(restaurants.geom, highways.geom, 500)
+FROM ch01.restaurants
+JOIN ch01.highways on ST_DWithin(restaurants.geom, highways.geom, 500)
 WHERE state = 'MD';
 ~~~
 {:.input}
+
+Exercise
+: PostGIS includes spatially aware function, such as `ST_DWithin` which tests distance relationships. The function `ST_ASText()` will convert a geometry into human readable text, and the command `ST_Transform(geom, 4326)` will transform `geom` to geographical coordinates (i.e. latitude and longitude). Modify the SQL so that it prints an additional field that gives you coordinates (rather than the name of the highway) of the franchises in Maryland.
+
+[//]: # " ST_AsText(ST_Transform(restaurants.geom, 4326)) "
 
 Learn more about PostGIS and this database from ["PostGIS in Action" by Regina O. Obe and Leo S. Hsu](https://www.manning.com/books/postgis-in-action-second-edition).

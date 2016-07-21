@@ -26,7 +26,7 @@ In the `plots` table, `plot_id` is the primary key.
 |---------+------------------|
 |       1 | Control          |
 |       2 | Rodent Exclosure |
-|       3 |                  |
+|       3 | Control          |
   
 In the `surveys` table, `record_id` is the primary key and `plot_id` is a foreign key.
 
