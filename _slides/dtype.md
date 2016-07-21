@@ -71,7 +71,7 @@ WHERE state = 'MD';
 {:.input}
 
 Exercise
-: PostGIS includes spatially aware function, such as `ST_DWithin` which tests distance relationships. The function `ST_ASText()` will convert a geometry into human readable text, and the command `ST_Transform(geom, 4326)` will transform `geom` to geographical coordinates (i.e. latitude and longitude). Modify the SQL so that it prints an additional field that gives you coordinates (rather than the name of the highway) of the franchises in Maryland.
+: PostGIS includes spatially aware function, such as `ST_DWithin` which tests distance relationships. The function `ST_AsText()` will convert a geometry into human readable text, and the command `ST_Transform(geom, 4326)` will transform `geom` to geographical coordinates (i.e. latitude and longitude). Modify the SQL so that it prints an additional field that gives you coordinates (rather than the name of the highway) of the franchises in Maryland.
 
 [//]: # " ST_AsText(ST_Transform(restaurants.geom, 4326)) "
 
