@@ -1,23 +1,11 @@
 ---
 ---
 
-# Data Storage and Access for All
+# Data Storage & Access for All
 
 Instructor: Mary Shelley
 
-## Rough Outline
+Why use a database?
+The laundry list of reasons a computer scientist might launch into boils down to three features: **concurrency**, **reliability**, and **scalability**.
+For a team of researchers implementing a collaborative workflow, it's **concurrency** -- allowing multiple users, or programs, to interact with the data simultaneously -- that answers the question once and for all.
 
-- intro.md
-  - friendly summary / motivation of lesson
-- goals.md
-  - objectives
-    - Understand how a database differs from a flat file
-	- Discover relational databases
-	- Meet Structured Query Language (SQL)
-	- Recognize the value of typed data
-	- See a GIS extension in action
-  - specific achievements
-    - Access a PostgreSQL server from the PostgreSQL Studio client
-	- Insert a row into an existing table
-	- Create a table and copy data to it
-	- Join tables on a single column

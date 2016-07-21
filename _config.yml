@@ -1,9 +1,9 @@
 # Site settings
 
-title: "The Landscape of Spatial Data Tools"
-email: "cyberhelp@sesync.org"
-description: "Introduction to the principles, and the open source stack, underlying geospatial analysis."
-baseurl: "/basic-osgeo-lesson"
+title: "Data Storage & Access for All"
+email: cyberhelp@sesync.org
+description: "Introduction to the principles and utility of relational database management systems."
+baseurl: /introdb-lesson
 
 # Jekyll Settings
 
@@ -14,3 +14,10 @@ collections:
 # List files from _slide/ in order here (without the extension)
 slide_sorter:
   - title
+  - intro
+  - goals
+  - features
+  - keys
+  - sql
+  - dtype
+  
