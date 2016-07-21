@@ -27,7 +27,7 @@ Hint #2
 <!--split-->
 
 Reviews came back from the manuscript you submitted to Nature on the portal mammals project.
-The always humble reviewer #2 suspects bias introduced by the surveyor and recommends controling for the identity of the observer that conducted each survey.
+The always humble Reviewer #2 suspects bias introduced by the surveyor and recommends controling for the identity of the observer that conducted each survey.
 
 The "Script" tab tells us about an existing table by showing a command that would create an empty table with the same fields.
 {:.fragment data-fragment-index="1"}
@@ -40,16 +40,26 @@ CREATE TABLE public.plots (
 ~~~
 {: .fragment data-fragment-index="1" .text-document title="plots"}
 
+The command is written in **Structured Query Language (SQL)**, which is a language all database management systems support for database communication.
+In the next steps, you will use SQL to alter the portal database in response to the Reviewer.
+{:.fragment data-fragment-index="2"}
+
 <!--split-->
 
-Select the ![]({{ site.baseurl }}/images/sql-button.png) button and run the following script.
+Select the ![]({{ site.baseurl }}/images/sql-button.png) button and run the following two scripts.
+The first script creates a new table, the second script adds a relationship to the `surveys` table.
 
 ~~~
 CREATE TABLE surveyor (
-    person_id integer PRIMARY KEY,
+    person_id serial PRIMARY KEY,
     first_name text,
     last_name text
 );
+~~~
+{:.input}
+
+~~~
+ALTER TABLE surveys ADD COLUMN person_id integer REFERENCES surveyor(person_id);
 ~~~
 {:.input}
 
@@ -57,70 +67,24 @@ All of you? Yes, go ahead and *try it*.
 
 <!--split-->
 
-The table exists, now we need to populate it with data.
-In the previous step, you used Structured Query Language (SQL) to communicate with the database.
-In this step, you will use SQL to add yourself as a surveyor.
-
-~~~
-INSERT INTO surveyor (person_id, first_name, last_name)
-    VALUES (%your_id%, %your_first name%, %your_last_name%);
-~~~
-{:.input}
-
-Question
-: Did anyone get an error? Ideas on what our problem is?
-{: .fragment}
-
-<!--split-->
-
-To fix the problem everyone just encountered, unless you happened to pick an unused `person_id`, let's define a smarter `person_id`.
-
-Before we can re-create the surveyor table, we have to drop the existing table.
-A `CREATE TABLE` statement would never overwrite existing data.
-
-~~~
-DROP TABLE surveyor CASCADE;
-~~~
-{:.input}
-
-Question
-: What event cascaded through to another table?
-{:.fragment}
-
-<!--split-->
-
-Previously we used `integer` as the data type.
-This time we are going to use `serial`, a sort of simple extension to the integer data type.
+In the `plots` table we see `integer` as the data type of the primary key.
+We used `serial`, a simple extension to the integer data type.
 A `serial` value is an integer sequence that populates a record automatically.
 
 ~~~
-CREATE TABLE surveyor (
-    person_id serial PRIMARY KEY,
-    first_name text,
-    last_name text
-)
+INSERT INTO surveyor (surname, name) VALUES
+    (%your_surname%, %your_name%);
 ~~~
 {:.input .fragment}
 
-~~~
-INSERT INTO surveyor (first_name, last_name)
-    VALUES (%your_first name%, %your_last_name%);
-~~~
-{:.input .fragment}
+Question
+: What's your person_id?
+{.fragment}
 
 <!--split-->
 
-Finally we create the relationship between `surveys` and `surveyors` by adding a Foreign Key to `surveys`.
-
-~~~
-ALTER TABLE surveys
-    ADD FOREIGN KEY(person_id) REFERENCES surveyor(person_id);
-~~~
-{:.input .fragment}
-
-<!--split-->
-
-Now, choose a `record_id` you will use as `%record_id%` in the next command.
+The foreign key on `surveys.person_id` exists, now we need to populate the column with data.
+Choose a `record_id` you will use as `%record_id%` in the next command.
 This is a survey on which you claim to be the surveyor -- let's update the data to reflect your work!
 
 ~~~
