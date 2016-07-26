@@ -5,12 +5,15 @@
 
 A database management system that resides on a network is ideal for collaborative, data-driven projects.
 Communication is therefore designed for networks: it involves a server application and a client application.
+
 We are going to look at the Portal Mammals data on a server running PostgreSQL, which is an open-source database management system.
 The client we will use to communicate with the server is a browser-based application called PostgreSQL Studio, which is just one of very many clients that connects to a PostgreSQL database.
 
-![]({{ site.baseurl }}/images/pgstudio-login.png){: width="30%"}
+<!--split-->
 
 Point a browser to `pgstudio.research.sesync.org` and login.
+
+![]({{ site.baseurl }}/images/pgstudio-login.png){: width="30%"}
 
 <!--split-->
 
@@ -59,7 +62,8 @@ CREATE TABLE surveyor (
 {:.input}
 
 ~~~
-ALTER TABLE surveys ADD COLUMN person_id integer REFERENCES surveyor(person_id);
+ALTER TABLE surveys
+    ADD COLUMN person_id integer REFERENCES surveyor(person_id);
 ~~~
 {:.input}
 
@@ -72,7 +76,8 @@ We used `serial`, a simple extension to the integer data type.
 A `serial` value is an integer sequence that populates a record automatically.
 
 ~~~
-INSERT INTO surveyor (first_name, last_name) VALUES ('%your_first_name%', '%your_last_name%');
+INSERT INTO surveyor (first_name, last_name)
+    VALUES ('%your_first_name%', '%your_last_name%');
 ~~~
 {:.input .fragment}
 
@@ -87,7 +92,8 @@ Choose a `record_id` you will use as `%record_id%` in the next command.
 This is a survey on which you claim to be the surveyor -- let's update the data to reflect your work!
 
 ~~~
-UPDATE surveys SET person_id = "%your_person_id%" WHERE record_id = "%record_id%";
+UPDATE surveys SET person_id = "%your_person_id%"
+WHERE record_id = "%record_id%";
 ~~~
 {:.input .fragment}
 
