@@ -72,8 +72,8 @@ We used `serial`, a simple extension to the integer data type.
 A `serial` value is an integer sequence that populates a record automatically.
 
 ~~~
-INSERT INTO surveyor (surname, name) VALUES
-    (%your_surname%, %your_name%);
+INSERT INTO surveyor (last_name, first_name) VALUES
+    ('%your_last_name%', '%your_first_name%');
 ~~~
 {:.input .fragment}
 
