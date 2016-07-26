@@ -72,8 +72,7 @@ We used `serial`, a simple extension to the integer data type.
 A `serial` value is an integer sequence that populates a record automatically.
 
 ~~~
-INSERT INTO surveyor (surname, name) VALUES
-    (%your_surname%, %your_name%);
+INSERT INTO surveyor (surname, name) VALUES ("%your_surname%", "%your_name%");
 ~~~
 {:.input .fragment}
 
@@ -88,18 +87,18 @@ Choose a `record_id` you will use as `%record_id%` in the next command.
 This is a survey on which you claim to be the surveyor -- let's update the data to reflect your work!
 
 ~~~
-UPDATE surveys SET person_id = %your_person_id% WHERE record_id = %record_id%;
+UPDATE surveys SET person_id = "%your_person_id%" WHERE record_id = "%record_id%";
 ~~~
 {:.input .fragment}
 
 <!--split-->
 
 To view the result of your update, and everyone elses, run the following query on the database.
-Two new SQL commands come into play here: `SELECT ... FROM` and `JOIN`.
+Two new SQL phrases come into play here: `SELECT ... FROM` and `JOIN`.
 
 ~~~
-SELECT record_id, surveyor.*
-FROM surveys JOIN surveyor USING(person_id);
+SELECT record_id, surveyor.* FROM surveys
+JOIN surveyor USING(person_id);
 ~~~
 {:.input}
 
