@@ -1,19 +1,1095 @@
----
-title: "Trainee View"
-layout: default
----
+<!DOCTYPE html>
+<html>
 
-{% for sorted in site.slide_sorter %}
-  {% capture id %}/slides/{{ sorted }}{% endcapture %}
-  {% assign slide = site.slides | where: "id", id | first %}
-  
-  <a name="{{ id }}"></a>
-  
-  {{ slide.content }}
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     
-  [Top of Section](#{{ id }})
-  {:.ToS}
+    <title>Data Storage & Access for All</title>
+    <meta name="description" content="Introduction to the principles and utility of relational database management systems.">
+    
+    <link rel="canonical" href="/introdb-lesson/">
+
+    <style type="text/css">
+      
+     /**
+ * Reset some basic elements
+ */
+body, h1, h2, h3, h4, h5, h6,
+p, blockquote, pre, hr,
+dl, dd, ol, ul, figure {
+    margin: 0;
+    padding: 0; }
+
+/**
+ * Basic styling
+ */
+body {
+    font: 400 16px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #111;
+    background-color: #fdfdfd;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-feature-settings: "kern" 1;
+    -moz-font-feature-settings: "kern" 1;
+    -o-font-feature-settings: "kern" 1;
+    font-feature-settings: "kern" 1;
+    font-kerning: normal; }
+
+/**
+ * Set `margin-bottom` to maintain vertical rhythm
+ */
+h1, h2, h3, h4, h5, h6,
+p, blockquote, pre,
+ul, ol, dl, figure,
+.highlight {
+    margin-bottom: 15px; }
+
+/**
+ * Images
+ */
+img {
+    max-width: 100%;
+    vertical-align: middle; }
+
+/**
+ * Figures
+ */
+figure > img {
+    display: block; }
+
+figcaption {
+    font-size: 14px; }
+
+/**
+ * Lists
+ */
+ul, ol {
+    margin-left: 30px; }
+
+li > ul,
+li > ol {
+    margin-bottom: 0; }
+
+/**
+ * Headings
+ */
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
+}
+
+/**
+ * Links
+ */
+a {
+    color: #2a7ae2;
+    text-decoration: none; }
+a:visited {
+    color: #1756a9; }
+a:hover {
+    color: #111;
+    text-decoration: underline; }
+
+/**
+ * Blockquotes
+ */
+blockquote {
+    color: #828282;
+    border-left: 4px solid #e8e8e8;
+    padding-left: 15px;
+    font-size: 18px;
+    letter-spacing: -1px;
+    font-style: italic; }
+blockquote > :last-child {
+    margin-bottom: 0; }
+
+/**
+ * Code formatting
+ */
+pre,
+code {
+    font-size: 15px;
+    border: 1px solid #e8e8e8;
+    border-radius: 3px;
+    background-color: #eef; }
+
+code {
+    padding: 1px 5px; }
+
+pre {
+    padding: 8px 12px;
+    overflow-x: auto; }
+pre > code {
+    border: 0;
+    padding-right: 0;
+    padding-left: 0; }
+
+/**
+ * Wrapper
+ */
+.wrapper {
+    max-width: -webkit-calc(800px - (30px * 2));
+    max-width: calc(800px - (30px * 2));
+    margin-right: auto;
+    margin-left: auto;
+    padding-right: 30px;
+    padding-left: 30px; }
+
+@media screen and (max-width: 800px) {
+    .wrapper {
+	max-width: -webkit-calc(800px - (30px));
+	max-width: calc(800px - (30px));
+	padding-right: 15px;
+	padding-left: 15px; } }
+
+/**
+ * Clearfix
+ */
+.wrapper:after, .footer-col-wrapper:after {
+    content: "";
+    display: table;
+    clear: both; }
+
+/**
+ * Icons
+ */
+.icon > svg {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle; }
+
+.icon > svg path {
+    fill: #828282; }
+
+/**
+ * Site header
+ */
+.site-header {
+    border-top: 5px solid #424242;
+    border-bottom: 1px solid #e8e8e8;
+    min-height: 56px;
+    position: relative; }
+
+.site-title {
+    font-size: 26px;
+    font-weight: 300;
+    line-height: 56px;
+    letter-spacing: -1px;
+    margin-bottom: 0;
+    float: left; }
+.site-title, .site-title:visited {
+    color: #424242; }
+
+.site-nav {
+    float: right;
+    line-height: 56px; }
+.site-nav .menu-icon {
+    display: none; }
+.site-nav .page-link {
+    color: #111;
+    line-height: 1.5; }
+.site-nav .page-link:not(:last-child) {
+    margin-right: 20px; }
+@media screen and (max-width: 600px) {
+    .site-nav {
+	position: absolute;
+	top: 9px;
+	right: 15px;
+	background-color: #fdfdfd;
+	border: 1px solid #e8e8e8;
+	border-radius: 5px;
+	text-align: right; }
+    .site-nav .menu-icon {
+	display: block;
+	float: right;
+	width: 36px;
+	height: 26px;
+	line-height: 0;
+	padding-top: 10px;
+	text-align: center; }
+    .site-nav .menu-icon > svg {
+	width: 18px;
+	height: 15px; }
+    .site-nav .menu-icon > svg path {
+	fill: #424242; }
+    .site-nav .trigger {
+	clear: both;
+	display: none; }
+    .site-nav:hover .trigger {
+	display: block;
+	padding-bottom: 5px; }
+    .site-nav .page-link {
+	display: block;
+	padding: 5px 10px;
+	margin-left: 20px; }
+    .site-nav .page-link:not(:last-child) {
+	margin-right: 0; } }
+
+/**
+ * Site footer
+ */
+.site-footer {
+    border-top: 1px solid #e8e8e8;
+    padding: 30px 0; }
+
+.footer-heading {
+    font-size: 18px;
+    margin-bottom: 15px; }
+
+.contact-list,
+.social-media-list {
+    list-style: none;
+    margin-left: 0; }
+
+.footer-col-wrapper {
+    font-size: 15px;
+    color: #828282;
+    margin-left: -15px; }
+
+.footer-col {
+    float: left;
+    margin-bottom: 15px;
+    padding-left: 15px; }
+
+.footer-col-1 {
+    width: -webkit-calc(35% - (30px / 2));
+    width: calc(35% - (30px / 2)); }
+
+.footer-col-2 {
+    width: -webkit-calc(20% - (30px / 2));
+    width: calc(20% - (30px / 2)); }
+
+.footer-col-3 {
+    width: -webkit-calc(45% - (30px / 2));
+    width: calc(45% - (30px / 2)); }
+
+@media screen and (max-width: 800px) {
+    .footer-col-1,
+    .footer-col-2 {
+	width: -webkit-calc(50% - (30px / 2));
+	width: calc(50% - (30px / 2)); }
+
+    .footer-col-3 {
+	width: -webkit-calc(100% - (30px / 2));
+	width: calc(100% - (30px / 2)); } }
+@media screen and (max-width: 600px) {
+    .footer-col {
+	float: none;
+	width: -webkit-calc(100% - (30px / 2));
+	width: calc(100% - (30px / 2)); } }
+/**
+ * Page content
+ */
+.page-content {
+    padding: 30px 0; }
+
+.page-heading {
+    font-size: 20px; }
+
+.post-list {
+    margin-left: 0;
+    list-style: none; }
+.post-list > li {
+    margin-bottom: 30px; }
+
+.post-meta {
+    font-size: 14px;
+    color: #828282; }
+
+.post-link {
+    display: block;
+    font-size: 24px; }
+
+/**
+ * Posts
+ */
+.post-header {
+    margin-bottom: 30px; }
+
+.post-title {
+    font-size: 42px;
+    letter-spacing: -1px;
+    line-height: 1; }
+@media screen and (max-width: 800px) {
+    .post-title {
+	font-size: 36px; } }
+
+.post-content {
+    margin-bottom: 30px; }
+.post-content h2 {
+    font-size: 32px; }
+@media screen and (max-width: 800px) {
+    .post-content h2 {
+	font-size: 28px; } }
+.post-content h3 {
+    font-size: 26px; }
+@media screen and (max-width: 800px) {
+    .post-content h3 {
+	font-size: 22px; } }
+.post-content h4 {
+    font-size: 20px; }
+@media screen and (max-width: 800px) {
+    .post-content h4 {
+	font-size: 18px; } }
+
+/**
+ * Syntax highlighting styles
+ */
+.highlight {
+    background: #fff; }
+.highlighter-rouge .highlight {
+    background: #eef; }
+.highlight .c {
+    color: #998;
+    font-style: italic; }
+.highlight .err {
+    color: #a61717;
+    background-color: #e3d2d2; }
+.highlight .k {
+    font-weight: bold; }
+.highlight .o {
+    font-weight: bold; }
+.highlight .cm {
+    color: #998;
+    font-style: italic; }
+.highlight .cp {
+    color: #999;
+    font-weight: bold; }
+.highlight .c1 {
+    color: #998;
+    font-style: italic; }
+.highlight .cs {
+    color: #999;
+    font-weight: bold;
+    font-style: italic; }
+.highlight .gd {
+    color: #000;
+    background-color: #fdd; }
+.highlight .gd .x {
+    color: #000;
+    background-color: #faa; }
+.highlight .ge {
+    font-style: italic; }
+.highlight .gr {
+    color: #a00; }
+.highlight .gh {
+    color: #999; }
+.highlight .gi {
+    color: #000;
+    background-color: #dfd; }
+.highlight .gi .x {
+    color: #000;
+    background-color: #afa; }
+.highlight .go {
+    color: #888; }
+.highlight .gp {
+    color: #555; }
+.highlight .gs {
+    font-weight: bold; }
+.highlight .gu {
+    color: #aaa; }
+.highlight .gt {
+    color: #a00; }
+.highlight .kc {
+    font-weight: bold; }
+.highlight .kd {
+    font-weight: bold; }
+.highlight .kp {
+    font-weight: bold; }
+.highlight .kr {
+    font-weight: bold; }
+.highlight .kt {
+    color: #458;
+    font-weight: bold; }
+.highlight .m {
+    color: #099; }
+.highlight .s {
+    color: #d14; }
+.highlight .na {
+    color: #008080; }
+.highlight .nb {
+    color: #0086B3; }
+.highlight .nc {
+    color: #458;
+    font-weight: bold; }
+.highlight .no {
+    color: #008080; }
+.highlight .ni {
+    color: #800080; }
+.highlight .ne {
+    color: #900;
+    font-weight: bold; }
+.highlight .nf {
+    color: #900;
+    font-weight: bold; }
+.highlight .nn {
+    color: #555; }
+.highlight .nt {
+    color: #000080; }
+.highlight .nv {
+    color: #008080; }
+.highlight .ow {
+    font-weight: bold; }
+.highlight .w {
+    color: #bbb; }
+.highlight .mf {
+    color: #099; }
+.highlight .mh {
+    color: #099; }
+.highlight .mi {
+    color: #099; }
+.highlight .mo {
+    color: #099; }
+.highlight .sb {
+    color: #d14; }
+.highlight .sc {
+    color: #d14; }
+.highlight .sd {
+    color: #d14; }
+.highlight .s2 {
+    color: #d14; }
+.highlight .se {
+    color: #d14; }
+.highlight .sh {
+    color: #d14; }
+.highlight .si {
+    color: #d14; }
+.highlight .sx {
+    color: #d14; }
+.highlight .sr {
+    color: #009926; }
+.highlight .s1 {
+    color: #d14; }
+.highlight .ss {
+    color: #990073; }
+.highlight .bp {
+    color: #999; }
+.highlight .vc {
+    color: #008080; }
+.highlight .vg {
+    color: #008080; }
+.highlight .vi {
+    color: #008080; }
+.highlight .il {
+    color: #099; }
+
+/* Table */
+
+table {
+    margin-bottom: 15px;
+}
+
+table th, table td {
+    padding: 5px 10px;
+}
+
+table > thead > .header {
+    background: transparent;
+}
+
+table > thead > tr > td, table > thead > tr > th,
+table > tbody > tr > td, table > tbody > tr > th,
+table > tfoot > tr > td, table > tfoot > tr > th {
+    border: 1px solid #DDD;
+}
+
+table > thead > tr > th,
+table > thead > tr > td {
+    border-bottom-width: 2px;
+}
+
+table tbody > tr:nth-of-type(2n+1) {
+    background-color: #F9F9F9;
+}
+
+
+     
+     p > img {
+	 vertical-align: middle;
+     }
+
+     p.captioned {
+	 text-align: center;
+     }
+     
+     .captioned em {
+	 font-size: 0.6em;
+     }
+     
+     .ToS {
+	 text-align: right;
+     }
+     
+     .input.highlighter-rouge pre {
+	 background-color: #EBECE4;
+     }
+
+     .input.highlighter-rouge code {
+	 background-color: transparent;
+     }
+
+     .output.highlighter-rouge pre {
+	 background-color: #ECECC7;
+     }
+
+     .output.highlighter-rouge code {
+	 background-color: transparent;
+     }
+     
+     .text-document pre {
+	 background-color: #FFFFFF;
+     }
+
+     .text-document code {
+	 color: #000000;
+     }
+
+     dt {
+	 font-weight: 500;
+     }
+
+     dd {
+	 margin-left: 22px;
+     }
+     
+    </style>
+    
+</head>
+
   
-  ---
-  
-{% endfor %}
+  <body>
+
+    <div class="page-content">
+      <div class="wrapper">
+        
+<p><a name="/slides/title"></a></p>
+
+<h1 id="data-storage--access-for-all">Data Storage &amp; Access for All</h1>
+
+<p>Instructor: Mary Shelley</p>
+
+<p>Why use a database?
+The laundry list of reasons a computer scientist might launch into boils down to three features: <strong>concurrency</strong>, <strong>reliability</strong>, and <strong>scalability</strong>.
+For a team of researchers implementing a collaborative workflow, it’s <strong>concurrency</strong> – allowing multiple users, or programs, to interact with the data simultaneously – that answers the question once and for all.</p>
+
+<p class="ToS"><a href="#/slides/title">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/intro"></a></p>
+
+<h2 id="the-portal-project">The Portal Project</h2>
+
+<p>Acknowledgement: Photos from portalproject.wordpress.com.</p>
+
+<p><img src="/introdb-lesson/images/portal-oct-07-15.jpg" alt="" width="60%" /></p>
+
+<!--split-->
+
+<p>The Portal Project is a long-term ecological study being conducted near Portal, AZ.
+Since 1977, the site has been a primary focus of research on interactions among rodents, ants and plants and their respective responses to climate. 
+A portion of the data has become widely distributed among instructors seeking a real-world dataset on which trainees can hone their data skills.</p>
+
+<p><img src="/introdb-lesson/images/portalview.jpg" alt="" width="60%" /></p>
+
+<!--split-->
+
+<p>The research site consists of many “plots” – patches of the Arizona desert that become intensively manipulated and observed.
+The plots have some fixed characteristics, such as the type of manipulation, geographic location, aspect, etc.</p>
+
+<p><img src="/introdb-lesson/images/img_19771.jpg" alt="" width="60%" /></p>
+
+<!--split-->
+
+<p>The plots have a lot of dynamic characteristics too, and are regularly surveyed with a particular focus on their changing species compostion.
+Every survey of each plot produces a distinct set of observations to be recorded in a database.
+A well-structured database has been designed to store &amp; access the bounty of information produced by this long-term ecological experiment.</p>
+
+<p><img src="/introdb-lesson/images/gkr2.jpg" alt="" width="60%" /></p>
+
+<p class="ToS"><a href="#/slides/intro">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/goals"></a></p>
+
+<h2 id="objectives-for-this-lesson">Objectives for this Lesson</h2>
+
+<ul>
+  <li>Understand how a database differs from a data file</li>
+  <li>Discover relational databases</li>
+  <li>Meet Structured Query Language (SQL)</li>
+  <li>Recognize the value of typed data</li>
+  <li>Glimpse spatial extensions in action</li>
+</ul>
+
+<!--split-->
+
+<h2 id="specific-achievements">Specific Achievements</h2>
+
+<ul>
+  <li>Access a database on a PostgreSQL server</li>
+  <li>Create a table and view table definitions</li>
+  <li>Insert records one at a time into a table</li>
+  <li>Alter the definition of an existing table</li>
+</ul>
+
+<p class="ToS"><a href="#/slides/goals">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/features"></a></p>
+
+<h2 id="characteristics-of-a-database-i">Characteristics of a Database I</h2>
+
+<p>Let’s begin with defining some terminology that is familiar from any system for data storage.
+For concreteness, we will use the case study just introduced to provide examples.</p>
+
+<dl>
+  <dt>Field</dt>
+  <dd>The smallest unit of information, each having a label and holding a value of the same type.</dd>
+  <dd>e.g. The time of the survey in which a small mammal was captured.</dd>
+  <dt>Record</dt>
+  <dd>A collection of related values, from different fields, that all describe the same entity.</dd>
+  <dd>e.g. The species, sex, size and location of a small mammal observed during a given survey.</dd>
+  <dt>Table</dt>
+  <dd>A collection of records, each one uniquely identified by the value of one or more fields.</dd>
+  <dd>e.g. All records of small mammals that were observed in any survey.</dd>
+</dl>
+
+<p>Stopping here, we may as well be describing a spreadsheet that can be curated in a data file (e.g. a CSV file) and read by almost every program for data applications.</p>
+
+<!--split-->
+
+<h3 id="limitations-of-data-files">Limitations of Data Files</h3>
+
+<dl>
+  <dt>Collaboration</dt>
+  <dd class="fragment">Emailing copies among collaborators. Anybody see a problem here?</dd>
+  <dt>Size</dt>
+  <dd class="fragment">Reading an entire data file into memory isn’t scaleable. Some file types (e.g. MS Excel files) have size limits.</dd>
+  <dt>Quality</dt>
+  <dd class="fragment">Enforcing restrictions on values is not the default behaviour of software that writes data files.</dd>
+  <dt>Extensions</dt>
+  <dd class="fragment">Specialized files are needed for non-traditional data types (e.g. ESRI Shapefiles).</dd>
+  <dt>API</dt>
+  <dd class="fragment">Binary or ASCII string manipulation? Yikes.</dd>
+</dl>
+
+<!--split-->
+
+<h3 id="database-solutions">Database Solutions</h3>
+
+<dl>
+  <dt>Collaboration</dt>
+  <dd class="fragment">A database accepts simultaneous users, which is most beneficial when the database is hosted on a network. There are never multiple copies of the data (aside from your backups!)</dd>
+  <dt>Size</dt>
+  <dd class="fragment">The database management system only reads requested parts of the data into memory. There is no size limit!</dd>
+  <dt>Quality</dt>
+  <dd class="fragment">Data types are enforced by default. No database lets you enter “9I1” in an integer field.</dd>
+  <dt>Extension</dt>
+  <dd class="fragment">Special packages are needed for non-traditional data types, but they can live in the same table as traditional ones.</dd>
+  <dt>API</dt>
+  <dd class="fragment">There are packages native to every programming language that ease reading and writing to databases.</dd>
+</dl>
+
+<p class="ToS"><a href="#/slides/features">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/keys"></a></p>
+
+<h2 id="characteristics-of-a-database-ii">Characteristics of a Database II</h2>
+
+<p>Returning to terminology, some database concepts don’t apply to data files at all.
+Databases include a <em>collection</em> of tables.
+You might call a mere collection of tables a data wharehouse – or an IKEA.
+The collection of tables in a <strong>relational database</strong> is structured by relationships between records from different tables.
+These relations are specified through primary and foreign keys, but which is which depends on context.</p>
+
+<dl class="fragment">
+  <dt>Primary Key</dt>
+  <dd>One or more fields (but <em>usually</em> one) that uniquely identify a record in a table.</dd>
+  <dd>e.g. <code class="highlighter-rouge">plot_id</code> in the <code class="highlighter-rouge">plots</code> table, or more succinctly <code class="highlighter-rouge">plots(plot_id)</code></dd>
+  <dt>Foreign Key</dt>
+  <dd>A primary key from table A used in table B to express their relationship.</dd>
+  <dd>e.g. <code class="highlighter-rouge">plot_id</code> in the surveys table, or <code class="highlighter-rouge">surveys(plot_id)</code></dd>
+</dl>
+
+<!--split-->
+
+<p>In the <code class="highlighter-rouge">plots</code> table, <code class="highlighter-rouge">plot_id</code> is the primary key.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>plot_id</th>
+      <th>plot_type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Control</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Rodent Exclosure</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Control</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>In the <code class="highlighter-rouge">surveys</code> table, <code class="highlighter-rouge">record_id</code> is the primary key and <code class="highlighter-rouge">plot_id</code> is a foreign key.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>record_id</th>
+      <th>year</th>
+      <th>month</th>
+      <th>day</th>
+      <th>plot_id</th>
+      <th>species_id</th>
+      <th>sex</th>
+      <th>weight</th>
+      <th>…</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>1977</td>
+      <td>11</td>
+      <td>5</td>
+      <td>2</td>
+      <td>ST</td>
+      <td>M</td>
+      <td>0.45</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>1977</td>
+      <td>11</td>
+      <td>5</td>
+      <td>2</td>
+      <td>PX</td>
+      <td>M</td>
+      <td>0.23</td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>1978</td>
+      <td>1</td>
+      <td>23</td>
+      <td>1</td>
+      <td>RO</td>
+      <td>F</td>
+      <td>1.23</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<!--split-->
+
+<h3 id="one-to-many-relationship">One-To-Many Relationship</h3>
+
+<p><img src="/introdb-lesson/images/many-to-one.svg" alt="" width="80%" /></p>
+
+<!--split-->
+
+<h3 id="many-to-many-relationship">Many-To-Many Relationship</h3>
+
+<p><img src="/introdb-lesson/images/many-to-many.svg" alt="" width="80%" /></p>
+
+<!--split-->
+
+<p>Proper use of table relationships is a great challenge in database design.
+The guiding principle is <strong>normalization</strong>, or taking steps to minimize data redundency.</p>
+
+<p>With an ideal database design, any value discovered to be erroneous should only have to be corrected in one record in one table.</p>
+
+<dl class="fragment">
+  <dt>Question</dt>
+  <dd>Based on your first look at the <code class="highlighter-rouge">plots</code> and <code class="highlighter-rouge">surveys</code> tables, does it look possible to further normalize this database?</dd>
+</dl>
+
+<p class="ToS"><a href="#/slides/keys">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/sql"></a></p>
+
+<h2 id="communicating-with-a-database">Communicating with a Database</h2>
+
+<p>A database management system that resides on a network is ideal for collaborative, data-driven projects.
+Communication is therefore designed for networks: it involves a server application and a client application.</p>
+
+<p>We are going to look at the Portal Mammals data on a server running PostgreSQL, which is an open-source database management system.
+The client we will use to communicate with the server is a browser-based application called PostgreSQL Studio, which is just one of very many clients that connects to a PostgreSQL database.</p>
+
+<!--split-->
+
+<p>Point a browser to <code class="highlighter-rouge">pgstudio.research.sesync.org</code> and login.</p>
+
+<p><img src="/introdb-lesson/images/pgstudio-login.png" alt="" width="30%" /></p>
+
+<!--split-->
+
+<dl>
+  <dt>Exercise</dt>
+  <dd>Examine the primary and foreign keys on the three tables. What columns make up the primary keys for each table? Are there many-to-one relationships? Are there many-to-many relationships?</dd>
+</dl>
+<dl class="fragment">
+  <dt>Hint #1</dt>
+  <dd>The “Columns” tab has a field labeled “PK”.</dd>
+  <dt>Hint #2</dt>
+  <dd>The “Constraints” tab shows different types of constraints that govern a table.</dd>
+</dl>
+
+<!--split-->
+
+<p>Reviews came back from the manuscript you submitted to Nature on the portal mammals project.
+The always humble Reviewer #2 suspects bias introduced by the surveyor and recommends controling for the identity of the observer that conducted each survey.</p>
+
+<p class="fragment" data-fragment-index="1">The “Script” tab tells us about an existing table by showing a command that would create an empty table with the same fields.</p>
+
+<div class="fragment text-document highlighter-rouge" data-fragment-index="1" title="plots"><pre class="highlight"><code>CREATE TABLE public.plots (
+    plot_id integer NOT NULL PRIMARY KEY,
+    plot_type text
+)
+</code></pre>
+</div>
+
+<p class="fragment" data-fragment-index="2">The command is written in <strong>Structured Query Language (SQL)</strong>, which is a language all database management systems support for database communication.
+In the next steps, you will use SQL to alter the portal database in response to the Reviewer.</p>
+
+<!--split-->
+
+<p>Select the <img src="/introdb-lesson/images/sql-button.png" alt="" /> button and run the following two scripts.
+The first script creates a new table, the second script adds a relationship to the <code class="highlighter-rouge">surveys</code> table.</p>
+
+<div class="input highlighter-rouge"><pre class="highlight"><code>CREATE TABLE surveyor (
+    person_id serial PRIMARY KEY,
+    first_name text,
+    last_name text
+);
+</code></pre>
+</div>
+
+<div class="input highlighter-rouge"><pre class="highlight"><code>ALTER TABLE surveys
+    ADD COLUMN person_id integer REFERENCES surveyor(person_id);
+</code></pre>
+</div>
+
+<p>All of you? Yes, go ahead and <em>try it</em>.</p>
+
+<!--split-->
+
+<p>In the <code class="highlighter-rouge">plots</code> table we see <code class="highlighter-rouge">integer</code> as the data type of the primary key.
+We used <code class="highlighter-rouge">serial</code>, a simple extension to the integer data type.
+A <code class="highlighter-rouge">serial</code> value is an integer sequence that populates a record automatically.</p>
+
+<div class="input fragment highlighter-rouge"><pre class="highlight"><code>INSERT INTO surveyor (first_name, last_name)
+    VALUES ('%your_first_name%', '%your_last_name%');
+</code></pre>
+</div>
+
+<dl>
+  <dt>Question</dt>
+  <dd>What’s your person_id?
+{.fragment}</dd>
+</dl>
+
+<!--split-->
+
+<p>The foreign key on <code class="highlighter-rouge">surveys.person_id</code> exists, now we need to populate the column with data.
+Choose a <code class="highlighter-rouge">record_id</code> you will use as <code class="highlighter-rouge">%record_id%</code> in the next command.
+This is a survey on which you claim to be the surveyor – let’s update the data to reflect your work!</p>
+
+<div class="input fragment highlighter-rouge"><pre class="highlight"><code>UPDATE surveys SET person_id = "%your_person_id%"
+WHERE record_id = "%record_id%";
+</code></pre>
+</div>
+
+<!--split-->
+
+<p>To view the result of your update, and everyone elses, run the following query on the database.
+Two new SQL phrases come into play here: <code class="highlighter-rouge">SELECT ... FROM</code> and <code class="highlighter-rouge">JOIN</code>.</p>
+
+<div class="input highlighter-rouge"><pre class="highlight"><code>SELECT record_id, surveyor.* FROM surveys
+JOIN surveyor USING(person_id);
+</code></pre>
+</div>
+
+<!--split-->
+
+<dl>
+  <dt>Exercise</dt>
+  <dd>How would the solution be different if there were multiple surveyors for each survey? Pseudocode a couple database commands that would create tables to address the situation with multiple surveyors for each survey.</dd>
+</dl>
+
+<p class="ToS"><a href="#/slides/sql">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/dtype"></a></p>
+
+<h2 id="data-types">Data Types</h2>
+
+<p>A key tactic in data quality control is precise (and enforceable!) definitions of the values allowed for each field.
+We just saw <code class="highlighter-rouge">integer</code>, <code class="highlighter-rouge">text</code> and the slightly more complicated <code class="highlighter-rouge">serial</code>.</p>
+
+<p class="fragment" data-fragment-index="1">Some of the essential data types, specifically for a PostgreSQL database.</p>
+
+<table class="fragment" data-fragment-index="1">
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>integer</td>
+      <td>whole numbers between -2,147,483,648 and 2,147,483,647</td>
+    </tr>
+    <tr>
+      <td>double</td>
+      <td>Inexact, variable-precision numeric value that can represent almost any number, and several non-numbers</td>
+    </tr>
+    <tr>
+      <td>decimal</td>
+      <td>Exact numeric value with user-specified precision (decimal places)</td>
+    </tr>
+    <tr>
+      <td>char</td>
+      <td>Fixed-length character string</td>
+    </tr>
+    <tr>
+      <td>varchar</td>
+      <td>Variable-length (up to a limit) character string</td>
+    </tr>
+    <tr>
+      <td>boolean</td>
+      <td>True or False</td>
+    </tr>
+    <tr>
+      <td>date</td>
+      <td>day with no time specification</td>
+    </tr>
+  </tbody>
+</table>
+
+<!--split-->
+
+<h3 id="data-granularity">Data Granularity</h3>
+
+<p>The degree to which information is broken up into diferent fields is called <strong>granularity</strong>, and it’s an important consideration in database design.
+On one hand, because it is easier to aggregate fields than disaggregate them down the road, initially erring on the side of too granular is best.
+On the other hand, some consideration of how each field will get used can lead to less granularity.</p>
+
+<dl class="fragment">
+  <dt>Question</dt>
+  <dd>In the surveys table, the date is broken into three integer fields. What are some advantages and disadvantages of such fine granularity over using a single field of type date?</dd>
+</dl>
+
+<!--split-->
+
+<h3 id="extensions">Extensions</h3>
+
+<p>The most complicated data types encountered so far are <code class="highlighter-rouge">serial</code> and <code class="highlighter-rouge">date</code>, but these come built-in to the standard PostgreSQL database management system (and many others).
+A database feature noted earlier is the ability to extend the available data types, wither by installing plugins or writing your own.</p>
+
+<p>A popular extension for PostgreSQL is PostGIS, which adds spatially aware data types and functions.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Data type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Geometry</td>
+      <td>Planar/Cartesian coordinates and calculations</td>
+    </tr>
+    <tr>
+      <td>Geography</td>
+      <td>Spheroidal geodetic objects, drawn on the earth’s curved surface.</td>
+    </tr>
+    <tr>
+      <td>Raster</td>
+      <td>Space as a grid of rectangular cells, associated with a numeric array/bands.</td>
+    </tr>
+    <tr>
+      <td>Topology</td>
+      <td>Models spatial objects as a network of connected nodes, edges, and faces.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!--split-->
+
+<p>PostGIS functions allow you to query your database on spatial relations, which act sort of like foreign key relationships.
+Jumping way ahead of ourselves, let’s see an example of what PostGIS can do.</p>
+
+<p>Log out of the <code class="highlighter-rouge">portal</code> database, and log in to the database <code class="highlighter-rouge">postgis_in_action</code> then select <code class="highlighter-rouge">ch01</code> from the Schema drop-down menu.</p>
+
+<dl>
+  <dt>Question</dt>
+  <dd>Look at the different tables and find the fields with spatial data types. What type does <code class="highlighter-rouge">restaurants</code> have, and what type does <code class="highlighter-rouge">highways</code> have?</dd>
+</dl>
+
+<!--split-->
+
+<p>The following query will list the restaurant franchises in Maryland that are within 500 meters of a highway.</p>
+
+<div class="input highlighter-rouge"><pre class="highlight"><code>SELECT franchise, name
+FROM ch01.restaurants
+JOIN ch01.highways on ST_DWithin(restaurants.geom, highways.geom, 500)
+WHERE state = 'MD';
+</code></pre>
+</div>
+
+<dl>
+  <dt>Exercise</dt>
+  <dd>PostGIS includes spatially aware function, such as <code class="highlighter-rouge">ST_DWithin</code> which tests distance relationships. The function <code class="highlighter-rouge">ST_AsText()</code> will convert a geometry into human readable text, and the command <code class="highlighter-rouge">ST_Transform(geom, 4326)</code> will transform <code class="highlighter-rouge">geom</code> to geographical coordinates (i.e. latitude and longitude). Modify the SQL so that it prints an additional field that gives you coordinates (rather than the name of the highway) of the franchises in Maryland.</dd>
+</dl>
+
+<p>Learn more about PostGIS and this database from <a href="https://www.manning.com/books/postgis-in-action-second-edition">“PostGIS in Action” by Regina O. Obe and Leo S. Hsu</a>.</p>
+
+<p class="ToS"><a href="#/slides/dtype">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/summary"></a></p>
+
+<h2 id="summary">Summary</h2>
+
+<p class="fragment">As we have seen, a database will be a core element of a centralized workflow, accomodating simultaneous use by all members of a collaborative team.
+We have just skimmed the topic of <strong>concurrency</strong> in database interactions: there is a lot going on under the hood to prevent data corruption.</p>
+
+<p class="fragment">The ability to precisely define data types if the primary database feature that guaranties <strong>reliability</strong> in your dataset. As you develop scripts for analysis and vizualization, certainty that you’ll never encounter a “NaN” when you expect an Integer will prevent, or help you catch, bugs and errors down the road.</p>
+
+<p class="fragment">The third major feature to motivate databae use, <strong>scaleability</strong>, remains for you to discover. Did you bring a large dataset? Our coaches will help you load it into the PostgreSQL server, where you will be able to witness the speed with which very large tables can be queried, sorted and combined as you work on your “data2doc” project this week.</p>
+
+<p class="ToS"><a href="#/slides/summary">Top of Section</a></p>
+
+<hr />
+
+
+      </div>
+    </div>
+
+  </body>
+
+</html>
