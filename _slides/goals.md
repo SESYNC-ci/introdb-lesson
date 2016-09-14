@@ -7,7 +7,10 @@
 - Discover relational databases
 - Meet Structured Query Language (SQL)
 - Recognize the value of typed data
+
+
 [//]: # " - Glimpse spatial extensions in action "
+
 
 <!--split-->
 	
