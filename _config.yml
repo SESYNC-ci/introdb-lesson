@@ -4,8 +4,8 @@ title: "Database Principles and Use"
 email: cyberhelp@sesync.org
 description: "Introduction to the principles and utility of relational database management systems."
 baseurl: /introdb-lesson
-# styleurl: https://cdn.rawgit.com/sesync-ci/lesson-stylesheets/1.0.0
-styleurl: https://rawgit.com/sesync-ci/lesson-stylesheets/master
+styleurl: https://cdn.rawgit.com/sesync-ci/lesson-stylesheets/1.0.1
+# styleurl: https://rawgit.com/sesync-ci/lesson-stylesheets/master
 reveal: https://cdn.rawgit.com/hakimel/reveal.js/3.3.0
 authors:
   - Ian Carroll
