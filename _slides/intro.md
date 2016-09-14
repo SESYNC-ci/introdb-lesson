@@ -11,7 +11,6 @@ Acknowledgement: Photos from portalproject.wordpress.com.
 
 The Portal Project is a long-term ecological study being conducted near Portal, AZ.
 Since 1977, the site has been a primary focus of research on interactions among rodents, ants and plants and their respective responses to climate. 
-A portion of the data has become widely distributed among instructors seeking a real-world dataset on which trainees can hone their data skills.
 
 ![]({{ site.baseurl }}/images/portalview.jpg){: width="60%"}
 
@@ -25,7 +24,6 @@ The plots have some fixed characteristics, such as the type of manipulation, geo
 <!--split-->
 
 The plots have a lot of dynamic characteristics too, and are regularly surveyed with a particular focus on their changing species compostion.
-Every survey of each plot produces a distinct set of observations to be recorded in a database.
-A well-structured database has been designed to store & access the bounty of information produced by this long-term ecological experiment.
+Every survey of each plot produces a distinct set of observations that get recorded in a well-structure database, designed for reliable storage & rapid access to the bounty of information produced by this long-term ecological experiment.
 
 ![]({{ site.baseurl }}/images/gkr2.jpg){: width="60%"}

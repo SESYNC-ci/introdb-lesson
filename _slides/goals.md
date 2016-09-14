@@ -7,13 +7,19 @@
 - Discover relational databases
 - Meet Structured Query Language (SQL)
 - Recognize the value of typed data
-- Glimpse spatial extensions in action
+[//]: # " - Glimpse spatial extensions in action "
 
 <!--split-->
 	
+[//]: # " ## Specific Achievements "
+
+[//]: # " - Access a database on a PostgreSQL server "
+[//]: # " - Create a table and view table definitions "
+[//]: # " - Insert records one at a time into a table "
+[//]: # " - Alter the definition of an existing table "
+
 ## Specific Achievements
 
-- Access a database on a PostgreSQL server
-- Create a table and view table definitions
-- Insert records one at a time into a table
-- Alter the definition of an existing table
+- Access a SQLite database from R
+- Select data to read into data frame
+- Test primary and foreign key constraints

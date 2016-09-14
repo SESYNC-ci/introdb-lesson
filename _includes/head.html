@@ -1,65 +1,13 @@
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <title>{{ site.title }}</title>
-    <meta name="description" content="{{ site.description }}">
-    
-    <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <style type="text/css">
-      
-     {% include main.css %}
-     
-     p > img {
-	 vertical-align: middle;
-     }
+  <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
+  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
 
-     p.captioned {
-	 text-align: center;
-     }
-     
-     .captioned em {
-	 font-size: 0.6em;
-     }
-     
-     .ToS {
-	 text-align: right;
-     }
-     
-     .input.highlighter-rouge pre {
-	 background-color: #EBECE4;
-     }
-
-     .input.highlighter-rouge code {
-	 background-color: transparent;
-     }
-
-     .output.highlighter-rouge pre {
-	 background-color: #ECECC7;
-     }
-
-     .output.highlighter-rouge code {
-	 background-color: transparent;
-     }
-     
-     .text-document pre {
-	 background-color: #FFFFFF;
-     }
-
-     .text-document code {
-	 color: #000000;
-     }
-
-     dt {
-	 font-weight: 500;
-     }
-
-     dd {
-	 margin-left: 22px;
-     }
-     
-    </style>
-    
+  {% if page.style %}
+  <link rel="stylesheet" href="{{ site.styleurl }}{{ page.style }}">
+  {% endif %}
+  
 </head>

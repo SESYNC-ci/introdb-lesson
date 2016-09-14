@@ -1,10 +1,12 @@
 ---
 ---
 
-# Data Storage & Access for All
+# {{ site.title }}
 
-Instructor: Mary Shelley
+Lesson {{ site.lesson }} with *Ian Carroll*
 
-Why use a database?
-The laundry list of reasons a computer scientist might launch into boils down to three features: **concurrency**, **reliability**, and **scalability**.
-For a team of researchers implementing a collaborative workflow, it's **concurrency** -- allowing multiple users, or programs, to interact with the data simultaneously -- that answers the question once and for all.
+For a team of researchers implementing a collaborative workflow, the top reasons to use a database are:
+
+1. **concurrency**
+1. **reliability**
+1. **scalability**

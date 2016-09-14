@@ -1,13 +1,13 @@
 ---
 ---
 
-## Characteristics of a Database II
+## Characteristics of a Database: Part II
 
 Returning to terminology, some database concepts don't apply to data files at all.
-Databases include a *collection* of tables.
-You might call a mere collection of tables a data wharehouse -- or an IKEA.
-The collection of tables in a **relational database** is structured by relationships between records from different tables.
-These relations are specified through primary and foreign keys, but which is which depends on context.
+Databases include a *collection* of tables, just as MS Excel includes a collection of spreadsheets in a workbook.
+The collection of tables in a **relational database**, however, is structured by relationships between records from different tables.
+
+Relationships are specified through primary and foreign keys, but which is which depends on context.
 
 Primary Key
 : One or more fields (but *usually* one) that uniquely identify a record in a table.
@@ -16,9 +16,11 @@ Primary Key
 Foreign Key
 : A primary key from table A used in table B to express their relationship.
 : e.g. `plot_id` in the surveys table, or `surveys(plot_id)`
-{:.fragment}
+
   
 <!--split-->
+
+## Primary keys
 
 In the `plots` table, `plot_id` is the primary key.
 
@@ -27,34 +29,69 @@ In the `plots` table, `plot_id` is the primary key.
 |       1 | Control          |
 |       2 | Rodent Exclosure |
 |       3 | Control          |
-  
+
+As a result, a new record *cannot* duplicate any plot_id.
+
+~~~r
+dbGetQuery(con, "insert into plots
+                 (plot_id, plot_type)
+                 values (1, 'Control')")
+~~~
+{:.text-document title="lesson-3.R"}
+
+~~~
+Error in sqliteSendQuery(con, statement, bind.data) : 
+  rsqlite_query_send: could not execute1: UNIQUE constraint failed: plots.plot_id
+~~~
+{:.output}
+
+<!--split-->
+
+## Foreign keys
+
 In the `surveys` table, `record_id` is the primary key and `plot_id` is a foreign key.
 
-| record_id | year | month | day | plot_id | species_id | sex | weight | ... |
-|-----------+------+-------+-----+---------+------------+-----+--------+-----|
-|         1 | 1977 |    11 |   5 |       2 | ST         | M   |   0.45 |     |
-|         2 | 1977 |    11 |   5 |       2 | PX         | M   |   0.23 |     |
-|         3 | 1978 |     1 |  23 |       1 | RO         | F   |   1.23 |     |
+| record_id | month | day | year | plot_id | species_id | sex | hindfoot_length | weight |
+|-----------+-------+-----+------+---------+------------+-----+-----------------+--------|
+|         1 |     7 |  16 | 1977 |       2 | ST         | M   |              32 |   0.45 |
+|         2 |     7 |  16 | 1977 |       2 | PX         | M   |              33 |   0.23 |
+|         3 |     7 |  16 | 1978 |       1 | RO         | F   |              14 |   1.23 |
 
 <!--split-->
 
-### One-To-Many Relationship
+With a properly designed database, references to invalid foreign keys *cannot* be entered.
 
-![]({{ site.baseurl }}/images/many-to-one.svg){: width="80%"}
+~~~r
+dbGetQuery(con, "insert into surveys
+                 (record_id, plot_id, species_id, sex)
+                 values (35549, 1, '00', 'M')")
+~~~
+{:.text-document title="lesson-3.R"}
+
+~~~
+Error in sqliteSendQuery(con, statement, bind.data) : 
+  rsqlite_query_send: could not execute1: FOREIGN KEY constraint failed
+~~~
+{:.output}
 
 <!--split-->
 
-### Many-To-Many Relationship
+## Normalized data is Tidy data
 
-![]({{ site.baseurl }}/images/many-to-many.svg){: width="80%"}
+Proper use of table relationships is a challenging part of database design.
+The objective is **normalization**, or taking steps to minimize data redundency.
 
-<!--split-->
-
-Proper use of table relationships is a great challenge in database design.
-The guiding principle is **normalization**, or taking steps to minimize data redundency.
+For example, the genus and species names are not associated with every survey record -- only with the species_id.
+Data about the species is a different "observational unit" than data about the individual caught in a survey.
+{:.fragment}
 
 With an ideal database design, any value discovered to be erroneous should only have to be corrected in one record in one table.
+{:.fragment}
+
+<!--split-->
 
 Question
-: Based on your first look at the `plots` and `surveys` tables, does it look possible to further normalize this database?
-{:.fragment}
+: Currently, `plots` is pretty sparse. What other kind of data might go into plots?
+
+Answer
+: {:.framgnet} Additional properties, such as location, that do not change over time.
