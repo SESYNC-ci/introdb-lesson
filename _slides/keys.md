@@ -3,24 +3,22 @@
 
 ## Characteristics of a Database: Part II
 
-Returning to terminology, some database concepts don't apply to data files at all.
+Returning to terminology, some database tools don't apply to data files at all.
 Databases include a *collection* of tables, just as MS Excel includes a collection of spreadsheets in a workbook.
 The collection of tables in a **relational database**, however, is structured by relationships between records from different tables.
 
 Relationships are specified through primary and foreign keys, but which is which depends on context.
 
-Primary Key
-: One or more fields (but *usually* one) that uniquely identify a record in a table.
-: e.g. `plot_id` in the `plots` table, or more succinctly `plots(plot_id)`
-  
-Foreign Key
-: A primary key from table A used in table B to express their relationship.
-: e.g. `plot_id` in the surveys table, or `surveys(plot_id)`
+## Primary key
 
-  
+One or more fields (but *usually* one) that uniquely identify a record in a table.
+
+Question
+: What would be the primary key in the surveys table. How do you know?
+
 <!--split-->
 
-## Primary keys
+## Primary key
 
 In the `plots` table, `plot_id` is the primary key.
 
@@ -45,9 +43,16 @@ Error in sqliteSendQuery(con, statement, bind.data) :
 ~~~
 {:.output}
 
+## Foreign key
+
+A primary key from table A used in table B to express their relationship.
+
+Question
+: Identify a primary / foreign key pair in the portal workbook.
+
 <!--split-->
 
-## Foreign keys
+## Foreign key
 
 In the `surveys` table, `record_id` is the primary key and `plot_id` is a foreign key.
 

@@ -68,6 +68,18 @@ API
 
 
 ~~~r
+library(RPostgreSQL)
+con <- dbConnect(PostgreSQL(), host="pg.sesync.org", user="icarroll")
+dbListTables(con)
+~~~
+{:.text-document title="lesson-3.R"}
+
+<!--split-->
+
+## Database connections from R
+
+
+~~~r
 library(RSQLite)
 con <- dbConnect(SQLite(), "data/portal.sqlite")
 dbListTables(con)
@@ -133,6 +145,8 @@ dbGetQuery(con, "select species_id, weight
 {:.output}
 
 The string inside the brackets is an example of Structured Query Language (SQL). The SQL instructions tell the database system (SQLite, in this case) to sort out and return only the records requested.
+
+<!--split-->
 
 ## Exercise 1
 
