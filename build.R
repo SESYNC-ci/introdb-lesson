@@ -4,7 +4,7 @@ require(stringr)
 
 config = yaml.load_file("_config.yml")
 render_markdown(fence_char = "~")
-#opts_knit$set(base.url = paste0(config$baseurl, "/"))
+opts_knit$set(base.url = paste0(config$baseurl, "/"))
 opts_chunk$set(
     comment = NA,
     fig.path = "images/",

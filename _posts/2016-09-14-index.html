@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Database Principles and Use</title>
+  <meta name="description" content="Introduction to the principles and utility of relational database management systems.">
+
+  
+  <link rel="stylesheet" href="https://cdn.rawgit.com/sesync-ci/lesson-stylesheets/1.0.1/css/lesson.css">
+  
+  
+</head>
+
+  
+  <body>
+
+    <div class="page-content">
+      <div class="wrapper">
+        
+<p><a name="/slides/title"></a></p>
+
+<h1 id="database-principles-and-use">Database Principles and Use</h1>
+
+<p>Lesson 3 with <em>Ian Carroll</em></p>
+
+<p>For a team of researchers implementing a collaborative workflow, the top reasons to use a database are:</p>
+
+<ol>
+  <li><strong>concurrency</strong></li>
+  <li><strong>reliability</strong></li>
+  <li><strong>scalability</strong></li>
+</ol>
+
+<p class="ToS"><a href="#/slides/title">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/goals"></a></p>
+
+<h2 id="objectives-for-this-lesson">Objectives for this Lesson</h2>
+
+<ul>
+  <li>Understand how a database differs from a data file</li>
+  <li>Discover relational databases</li>
+  <li>Meet Structured Query Language (SQL)</li>
+  <li>Recognize the value of typed data</li>
+</ul>
+
+<!--split-->
+
+<h2 id="specific-achievements">Specific Achievements</h2>
+
+<ul>
+  <li>Access a SQLite database from R</li>
+  <li>Select data to read into data frame</li>
+  <li>Test primary and foreign key constraints</li>
+</ul>
+
+<p class="ToS"><a href="#/slides/goals">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/intro"></a></p>
+
+<h2 id="the-portal-project">The Portal Project</h2>
+
+<p>Acknowledgement: Photos from portalproject.wordpress.com.</p>
+
+<p><img src="/introdb-lesson/images/portal-oct-07-15.jpg" alt="" width="40%" /></p>
+
+<!--split-->
+
+<p>The Portal Project is a long-term ecological study being conducted near Portal, AZ.
+Since 1977, the site has been a primary focus of research on interactions among rodents, ants and plants and their respective responses to climate.</p>
+
+<p><img src="/introdb-lesson/images/portalview.jpg" alt="" width="50%" /></p>
+
+<!--split-->
+
+<p>The research site consists of many “plots” – patches of the Arizona desert that become intensively manipulated and observed.
+The plots have some fixed characteristics, such as the type of manipulation, geographic location, aspect, etc.</p>
+
+<p><img src="/introdb-lesson/images/img_19771.jpg" alt="" width="40%" /></p>
+
+<!--split-->
+
+<p>The plots have a lot of dynamic characteristics too, and are regularly surveyed with a particular focus on their changing species compostion.
+Every survey of each plot produces a distinct set of observations that get recorded in a well-structure database, designed for reliable storage &amp; rapid access to the bounty of information produced by this long-term ecological experiment.</p>
+
+<p><img src="/introdb-lesson/images/gkr2.jpg" alt="" width="50%" /></p>
+
+<p class="ToS"><a href="#/slides/intro">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/features"></a></p>
+
+<h2 id="characteristics-of-a-database-part-i">Characteristics of a Database: Part I</h2>
+
+<p>Let’s begin with defining some terminology that is familiar from any system for data storage.
+For concreteness, we will use the case study just introduced to provide examples.</p>
+
+<dl>
+  <dt>Field</dt>
+  <dd>The smallest unit of information, each having a label and holding a value of the same type.</dd>
+  <dd>e.g. The time of the survey in which a small mammal was captured.</dd>
+  <dt>Record</dt>
+  <dd>A collection of related values, from different fields, that all describe the same entity.</dd>
+  <dd>e.g. The species, sex, size and location of a small mammal observed during a given survey.</dd>
+  <dt>Table</dt>
+  <dd>A collection of records, each one uniquely identified by the value of one or more fields.</dd>
+  <dd>e.g. All records of small mammals that were observed in any survey.</dd>
+</dl>
+
+<aside class="notes">
+
+  <p>These characteristics could equally be applied to a spreadsheet, one that can be curated in a text file (e.g. a CSV file) as well as specialized formats (e.g. a MS Excel file).</p>
+
+</aside>
+
+<!--split-->
+
+<h3 id="limitations-of-data-files">Limitations of Data Files</h3>
+
+<dl>
+  <dt>Collaboration</dt>
+  <dd class="fragment">Email copies among collaborators, store in the cloud (sync issues) or save to a network (user collision).</dd>
+  <dt>Size</dt>
+  <dd class="fragment">Reading an entire data file into memory isn’t scaleable. Some file types (e.g. MS Excel files) have size limits.</dd>
+  <dt>Quality</dt>
+  <dd class="fragment">Enforcing restrictions on values is not the default behaviour of software that writes data files.</dd>
+  <dt>Extensions</dt>
+  <dd class="fragment">Specialized files are needed for non-traditional data types (e.g. ESRI Shapefiles).</dd>
+  <dt>API</dt>
+  <dd class="fragment">No standard approach for different application to read, edit or create records.</dd>
+</dl>
+
+<!--split-->
+
+<h3 id="database-solutions">Database Solutions</h3>
+
+<dl>
+  <dt>Collaboration</dt>
+  <dd class="fragment">A database accepts simultaneous users, which is most beneficial when the database is hosted on a network. There are never multiple copies of the data (aside from your backups!)</dd>
+  <dt>Size</dt>
+  <dd class="fragment">The database management system only reads requested parts of the data into memory. There is no size limit!</dd>
+  <dt>Quality</dt>
+  <dd class="fragment">Data types are enforced by default. No database lets you enter “9I1” in an integer field.</dd>
+  <dt>Extension</dt>
+  <dd class="fragment">Special packages are needed for non-traditional data types, but they can live in the same table as traditional ones.</dd>
+  <dt>API</dt>
+  <dd class="fragment">There are packages native to every programming language that ease reading and writing to databases.</dd>
+</dl>
+
+<!--split-->
+
+<h2 id="database-connections-from-r">Database connections from R</h2>
+
+<div class="language-r text-document highlighter-rouge" title="lesson-3.R"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">RPostgreSQL</span><span class="p">)</span>
+<span class="n">con</span> <span class="o">&lt;-</span> <span class="n">dbConnect</span><span class="p">(</span><span class="n">PostgreSQL</span><span class="p">(),</span> <span class="n">host</span><span class="o">=</span><span class="s2">"pg.sesync.org"</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s2">"icarroll"</span><span class="p">)</span>
+<span class="n">dbListTables</span><span class="p">(</span><span class="n">con</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<!--split-->
+
+<h2 id="database-connections-from-r-1">Database connections from R</h2>
+
+<div class="language-r text-document highlighter-rouge" title="lesson-3.R"><pre class="highlight"><code><span class="n">library</span><span class="p">(</span><span class="n">RSQLite</span><span class="p">)</span>
+<span class="n">con</span> <span class="o">&lt;-</span> <span class="n">dbConnect</span><span class="p">(</span><span class="n">SQLite</span><span class="p">(),</span> <span class="s2">"data/portal.sqlite"</span><span class="p">)</span>
+<span class="n">dbListTables</span><span class="p">(</span><span class="n">con</span><span class="p">)</span>
+</code></pre>
+</div>
+<div class="output highlighter-rouge"><pre class="highlight"><code>[1] "plots"   "species" "surveys"
+</code></pre>
+</div>
+
+<!--split-->
+
+<h2 id="two-ways-to-access-data">Two ways to access data</h2>
+
+<p>Read the data into an R data frame, and process it using R functions.</p>
+
+<div class="language-r text-document highlighter-rouge" title="lesson-3.R"><pre class="highlight"><code><span class="n">plots</span> <span class="o">&lt;-</span> <span class="n">dbReadTable</span><span class="p">(</span><span class="n">con</span><span class="p">,</span> <span class="s2">"plots"</span><span class="p">)</span>
+<span class="n">surveys</span> <span class="o">&lt;-</span> <span class="n">dbReadTable</span><span class="p">(</span><span class="n">con</span><span class="p">,</span> <span class="s2">"surveys"</span><span class="p">)</span>
+<span class="n">species</span> <span class="o">&lt;-</span> <span class="n">dbReadTable</span><span class="p">(</span><span class="n">con</span><span class="p">,</span> <span class="s2">"species"</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<div class="language-r input highlighter-rouge"><pre class="highlight"><code><span class="n">str</span><span class="p">(</span><span class="n">surveys</span><span class="p">)</span>
+</code></pre>
+</div>
+<div class="output highlighter-rouge"><pre class="highlight"><code>'data.frame':	34786 obs. of  9 variables:
+ $ record_id      : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ month          : int  7 7 7 7 7 7 7 7 7 7 ...
+ $ day            : int  16 16 16 16 16 16 16 16 16 16 ...
+ $ year           : int  1977 1977 1977 1977 1977 1977 1977 1977 1977 1977 ...
+ $ plot_id        : int  2 3 2 7 3 1 2 1 1 6 ...
+ $ species_id     : chr  "NL" "NL" "DM" "DM" ...
+ $ sex            : chr  "M" "M" "F" "M" ...
+ $ hindfoot_length: int  32 33 37 36 35 14 NA 37 34 20 ...
+ $ weight         : int  NA NA NA NA NA NA NA NA NA NA ...
+</code></pre>
+</div>
+
+<!--split-->
+
+<p>Let the database system process data.</p>
+
+<div class="language-r text-document highlighter-rouge" title="lesson-3.R"><pre class="highlight"><code><span class="n">dbGetQuery</span><span class="p">(</span><span class="n">con</span><span class="p">,</span> <span class="s2">"select species_id, weight
+                 from surveys
+                 where plot_id = 1 limit 5"</span><span class="p">)</span>
+</code></pre>
+</div>
+<div class="output highlighter-rouge"><pre class="highlight"><code>  species_id weight
+1         PF     NA
+2         DM     NA
+3         DM     NA
+4         PF      9
+5         DS     NA
+</code></pre>
+</div>
+
+<p>The string inside the brackets is an example of Structured Query Language (SQL). The SQL instructions tell the database system (SQLite, in this case) to sort out and return only the records requested.</p>
+
+<!--split-->
+
+<h2 id="exercise-1">Exercise 1</h2>
+
+<p>Use <code class="highlighter-rouge">dbGetQuery()</code> to select the “species_id”, and two other fields from the “species” table. Hint: use <code class="highlighter-rouge">dbListFields()</code> to check field names.</p>
+
+<p class="ToS"><a href="#/slides/features">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/keys"></a></p>
+
+<h2 id="characteristics-of-a-database-part-ii">Characteristics of a Database: Part II</h2>
+
+<p>Returning to terminology, some database tools don’t apply to data files at all.
+Databases include a <em>collection</em> of tables, just as MS Excel includes a collection of spreadsheets in a workbook.
+The collection of tables in a <strong>relational database</strong>, however, is structured by relationships between records from different tables.</p>
+
+<p>Relationships are specified through primary and foreign keys, but which is which depends on context.</p>
+
+<h2 id="primary-key">Primary key</h2>
+
+<p>One or more fields (but <em>usually</em> one) that uniquely identify a record in a table.</p>
+
+<dl>
+  <dt>Question</dt>
+  <dd>What would be the primary key in the surveys table. How do you know?</dd>
+</dl>
+
+<!--split-->
+
+<h2 id="primary-key-1">Primary key</h2>
+
+<p>In the <code class="highlighter-rouge">plots</code> table, <code class="highlighter-rouge">plot_id</code> is the primary key.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>plot_id</th>
+      <th>plot_type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Control</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Rodent Exclosure</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Control</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>As a result, a new record <em>cannot</em> duplicate any plot_id.</p>
+
+<div class="language-r text-document highlighter-rouge" title="lesson-3.R"><pre class="highlight"><code><span class="n">dbGetQuery</span><span class="p">(</span><span class="n">con</span><span class="p">,</span> <span class="s2">"insert into plots
+                 (plot_id, plot_type)
+                 values (1, 'Control')"</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<div class="output highlighter-rouge"><pre class="highlight"><code>Error in sqliteSendQuery(con, statement, bind.data) : 
+  rsqlite_query_send: could not execute1: UNIQUE constraint failed: plots.plot_id
+</code></pre>
+</div>
+
+<h2 id="foreign-key">Foreign key</h2>
+
+<p>A primary key from table A used in table B to express their relationship.</p>
+
+<dl>
+  <dt>Question</dt>
+  <dd>Identify a primary / foreign key pair in the portal workbook.</dd>
+</dl>
+
+<!--split-->
+
+<h2 id="foreign-key-1">Foreign key</h2>
+
+<p>In the <code class="highlighter-rouge">surveys</code> table, <code class="highlighter-rouge">record_id</code> is the primary key and <code class="highlighter-rouge">plot_id</code> is a foreign key.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>record_id</th>
+      <th>month</th>
+      <th>day</th>
+      <th>year</th>
+      <th>plot_id</th>
+      <th>species_id</th>
+      <th>sex</th>
+      <th>hindfoot_length</th>
+      <th>weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>7</td>
+      <td>16</td>
+      <td>1977</td>
+      <td>2</td>
+      <td>ST</td>
+      <td>M</td>
+      <td>32</td>
+      <td>0.45</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>7</td>
+      <td>16</td>
+      <td>1977</td>
+      <td>2</td>
+      <td>PX</td>
+      <td>M</td>
+      <td>33</td>
+      <td>0.23</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>7</td>
+      <td>16</td>
+      <td>1978</td>
+      <td>1</td>
+      <td>RO</td>
+      <td>F</td>
+      <td>14</td>
+      <td>1.23</td>
+    </tr>
+  </tbody>
+</table>
+
+<!--split-->
+
+<p>With a properly designed database, references to invalid foreign keys <em>cannot</em> be entered.</p>
+
+<div class="language-r text-document highlighter-rouge" title="lesson-3.R"><pre class="highlight"><code><span class="n">dbGetQuery</span><span class="p">(</span><span class="n">con</span><span class="p">,</span> <span class="s2">"insert into surveys
+                 (record_id, plot_id, species_id, sex)
+                 values (35549, 1, '00', 'M')"</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<div class="output highlighter-rouge"><pre class="highlight"><code>Error in sqliteSendQuery(con, statement, bind.data) : 
+  rsqlite_query_send: could not execute1: FOREIGN KEY constraint failed
+</code></pre>
+</div>
+
+<!--split-->
+
+<h2 id="normalized-data-is-tidy-data">Normalized data is Tidy data</h2>
+
+<p>Proper use of table relationships is a challenging part of database design.
+The objective is <strong>normalization</strong>, or taking steps to minimize data redundency.</p>
+
+<p class="fragment">For example, the genus and species names are not associated with every survey record – only with the species_id.
+Data about the species is a different “observational unit” than data about the individual caught in a survey.</p>
+
+<p class="fragment">With an ideal database design, any value discovered to be erroneous should only have to be corrected in one record in one table.</p>
+
+<!--split-->
+
+<dl>
+  <dt>Question</dt>
+  <dd>Currently, <code class="highlighter-rouge">plots</code> is pretty sparse. What other kind of data might go into plots?</dd>
+  <dt>Answer</dt>
+  <dd class="framgnet">Additional properties, such as location, that do not change over time.</dd>
+</dl>
+
+<p class="ToS"><a href="#/slides/keys">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/join"></a></p>
+
+<h2 id="when-untidy-data-okay">When untidy data okay</h2>
+
+<p>Record, store, and read data in the most normalized form possible.
+Only untidy your tables as needed for particular analyses.
+The most common operation for untidying is to “join” tables. For example, to carry out a regression with formula:</p>
+
+<p>“weight ~ month + plot_type”</p>
+
+<p>you’ll need a table with rows for each “record_id” that also includes a “plot_type”, which can be inferred from the “plot_id”.
+There are two kinds of table relationships – uses of primary and foreign key references – that permit database joins.</p>
+
+<!--split-->
+
+<h3 id="one-to-many-relationship">One-To-Many Relationship</h3>
+
+<p><img src="/introdb-lesson/images/many-to-one.svg" alt="" width="80%" /></p>
+
+<!--split-->
+
+<p>The SQL keyword “join” lines up two tables, repeating records as necessary, to satisfy the constrain given after “on”.</p>
+
+<div class="language-r text-document highlighter-rouge" title="lesson-3.R"><pre class="highlight"><code><span class="n">df</span> <span class="o">&lt;-</span> <span class="n">dbGetQuery</span><span class="p">(</span><span class="n">con</span><span class="p">,</span> <span class="s2">"select weight, month, plot_type
+                       from surveys
+                       join plots on surveys.plot_id = plots.plot_id
+                       where weight is not null"</span><span class="p">)</span>
+<span class="n">str</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</code></pre>
+</div>
+<div class="output highlighter-rouge"><pre class="highlight"><code>'data.frame':	32283 obs. of  3 variables:
+ $ weight   : int  40 48 29 46 36 52 8 22 35 7 ...
+ $ month    : int  8 8 8 8 8 8 8 8 8 8 ...
+ $ plot_type: chr  "Long-term Krat Exclosure" "Rodent Exclosure" "Control" "Control" ...
+</code></pre>
+</div>
+
+<!--split-->
+
+<h3 id="many-to-many-relationship">Many-To-Many Relationship</h3>
+
+<p><img src="/introdb-lesson/images/many-to-many-2.svg" alt="" width="80%" /></p>
+
+<h2 id="exercise-2">Exercise 2</h2>
+
+<p>Construct a data frame that you could use to fit the regression model “weight ~ month + plot_type + taxa”.</p>
+
+<p class="ToS"><a href="#/slides/join">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/dtype"></a></p>
+
+<h2 id="data-types">Data Types</h2>
+
+<p>A key tactic in data quality control is precise (and enforceable!) definitions of the values allowed for each field.
+We just saw <code class="highlighter-rouge">integer</code>, <code class="highlighter-rouge">text</code> and the slightly more complicated <code class="highlighter-rouge">serial</code>.</p>
+
+<p class="fragment" data-fragment-index="1">Some of the essential data types, specifically for a PostgreSQL database.</p>
+
+<table class="fragment" data-fragment-index="1">
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>integer</td>
+      <td>whole numbers between -2,147,483,648 and 2,147,483,647</td>
+    </tr>
+    <tr>
+      <td>double</td>
+      <td>Inexact, variable-precision numeric value that can represent almost any number, and several non-numbers</td>
+    </tr>
+    <tr>
+      <td>decimal</td>
+      <td>Exact numeric value with user-specified precision (decimal places)</td>
+    </tr>
+    <tr>
+      <td>char</td>
+      <td>Fixed-length character string</td>
+    </tr>
+    <tr>
+      <td>varchar</td>
+      <td>Variable-length (up to a limit) character string</td>
+    </tr>
+    <tr>
+      <td>boolean</td>
+      <td>True or False</td>
+    </tr>
+    <tr>
+      <td>date</td>
+      <td>day with no time specification</td>
+    </tr>
+  </tbody>
+</table>
+
+<!--split-->
+
+<h3 id="data-granularity">Data Granularity</h3>
+
+<p>The degree to which information is broken up into diferent fields is called <strong>granularity</strong>, and it’s an important consideration in database design.
+On one hand, because it is easier to aggregate fields than disaggregate them down the road, initially erring on the side of too granular is best.
+On the other hand, some consideration of how each field will get used can lead to less granularity.</p>
+
+<dl>
+  <dt>Question</dt>
+  <dd>In the surveys table, the date is broken into three integer fields. What are some advantages and disadvantages of such fine granularity over using a single field of type date?</dd>
+  <dt>Answer</dt>
+  <dd class="fragment">Advantages include easy selection by month, day or year. Disadvantages include difficulty of selecting by date range.</dd>
+</dl>
+
+<p class="ToS"><a href="#/slides/dtype">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/summary"></a></p>
+
+<h2 id="summary">Summary</h2>
+
+<p class="fragment">Databases are a core element of a centralized workflow, accomodating simultaneous use by all members of a collaborative team.
+We have just skimmed the topic of <strong>concurrency</strong> in database interactions: there is a lot going on under the hood to prevent data corruption.</p>
+
+<p class="fragment">The ability to precisely define keys and data types is the primary database feature that guaranties <strong>reliability</strong>. As you develop scripts for analysis and vizualization, certainty that you’ll never encounter a “NaN” when you expect an Integer will prevent, or help you catch, bugs in your code.</p>
+
+<p class="fragment">The third major feature to motivate databae use, <strong>scaleability</strong>, remains for you to discover. Very large tables can be queried, sorted and combined quickly when the work is done by a powerful database system outside of R.</p>
+
+<p class="ToS"><a href="#/slides/summary">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/solutions"></a></p>
+
+<h2 id="exercise-solutions">Exercise Solutions</h2>
+
+<!--split-->
+
+<h2 id="solution-1">Solution 1</h2>
+
+<div class="language-r text-document highlighter-rouge" title="lesson-3.R"><pre class="highlight"><code><span class="n">df</span> <span class="o">&lt;-</span> <span class="n">dbGetQuery</span><span class="p">(</span><span class="n">con</span><span class="p">,</span> <span class="s2">"select species_id, taxa, genus
+                       from species"</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<aside class="notes">
+  <p><a href="#exercise-1">Return</a></p>
+</aside>
+
+<!--split-->
+
+<h2 id="solution-2">Solution 2</h2>
+
+<div class="language-r text-document highlighter-rouge" title="lesson-3.R"><pre class="highlight"><code><span class="n">df</span> <span class="o">&lt;-</span> <span class="n">dbGetQuery</span><span class="p">(</span><span class="n">con</span><span class="p">,</span> <span class="s2">"select weight, month, plot_type, taxa
+                       from surveys
+                       join plots on surveys.plot_id = plots.plot_id
+                       join species on surveys.species_id = species.species_id
+                       where weight is not null"</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<aside class="notes">
+  <p><a href="#exercise-2">Return</a></p>
+</aside>
+
+<p class="ToS"><a href="#/slides/solutions">Top of Section</a></p>
+
+<hr />
+
+
+      </div>
+    </div>
+
+  </body>
+
+</html>
