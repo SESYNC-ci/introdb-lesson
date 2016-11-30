@@ -26,7 +26,7 @@ These characteristics could equally be applied to a spreadsheet, one that can be
 
 ===
 
-### Limitations of Data Files
+## Limitations of Data Files
 
 Collaboration
 : {:.fragment} Email copies among collaborators, store in the cloud (sync issues) or save to a network (user collision).
@@ -45,7 +45,7 @@ API
 
 ===
 
-### Database Solutions
+## Database Solutions
 
 Collaboration
 : {:.fragment} A database accepts simultaneous users, which is most beneficial when the database is hosted on a network. There are never multiple copies of the data (aside from your backups!)
@@ -68,8 +68,7 @@ API
 
 ```{r message=FALSE, title="lesson-3.R", eval=FALSE}
 library(RPostgreSQL)
-con <- dbConnect(PostgreSQL(), host="pg.sesync.org", user="icarroll")
-dbListTables(con)
+con <- dbConnect(PostgreSQL(), host="postgresql.sesync.org", dbname="portal")
 ```
 
 ===
@@ -79,6 +78,9 @@ dbListTables(con)
 ```{r message=FALSE, title="lesson-3.R"}
 library(RSQLite)
 con <- dbConnect(SQLite(), "data/portal.sqlite")
+```
+
+```{r}
 dbListTables(con)
 ```
 

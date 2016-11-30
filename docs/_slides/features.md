@@ -26,7 +26,7 @@ These characteristics could equally be applied to a spreadsheet, one that can be
 
 ===
 
-### Limitations of Data Files
+## Limitations of Data Files
 
 Collaboration
 : {:.fragment} Email copies among collaborators, store in the cloud (sync issues) or save to a network (user collision).
@@ -45,7 +45,7 @@ API
 
 ===
 
-### Database Solutions
+## Database Solutions
 
 Collaboration
 : {:.fragment} A database accepts simultaneous users, which is most beneficial when the database is hosted on a network. There are never multiple copies of the data (aside from your backups!)
@@ -69,8 +69,7 @@ API
 
 ~~~r
 library(RPostgreSQL)
-con <- dbConnect(PostgreSQL(), host="pg.sesync.org", user="icarroll")
-dbListTables(con)
+con <- dbConnect(PostgreSQL(), host="postgresql.sesync.org", dbname="portal")
 ~~~
 {:.text-document title="lesson-3.R"}
 
@@ -82,9 +81,14 @@ dbListTables(con)
 ~~~r
 library(RSQLite)
 con <- dbConnect(SQLite(), "data/portal.sqlite")
-dbListTables(con)
 ~~~
 {:.text-document title="lesson-3.R"}
+
+
+~~~r
+dbListTables(con)
+~~~
+{:.input}
 ~~~
 [1] "plots"   "species" "surveys"
 ~~~
@@ -133,7 +137,7 @@ dbGetQuery(con, "select species_id, weight
                  from surveys
                  where plot_id = 1 limit 5")
 ~~~
-{:.text-document title="lesson-3.R"}
+
 ~~~
   species_id weight
 1         PF     NA
@@ -142,7 +146,7 @@ dbGetQuery(con, "select species_id, weight
 4         PF      9
 5         DS     NA
 ~~~
-{:.output}
+{:.text-document title="lesson-3.R"}
 
 The string inside the brackets is an example of Structured Query Language (SQL). The SQL instructions tell the database system (SQLite, in this case) to sort out and return only the records requested.
 
