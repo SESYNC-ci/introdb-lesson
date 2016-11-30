@@ -20,7 +20,7 @@ Some of the essential data types, specifically for a PostgreSQL database.
 | date      | day with no time specification                                                                          |
 {:.fragment data-fragment-index="1"}
 
-<!--split-->
+===
 
 ### Data Granularity
 

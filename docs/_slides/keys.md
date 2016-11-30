@@ -16,7 +16,7 @@ One or more fields (but *usually* one) that uniquely identify a record in a tabl
 Question
 : What would be the primary key in the surveys table. How do you know?
 
-<!--split-->
+===
 
 ## Primary key
 
@@ -50,7 +50,7 @@ A primary key from table A used in table B to express their relationship.
 Question
 : Identify a primary / foreign key pair in the portal workbook.
 
-<!--split-->
+===
 
 ## Foreign key
 
@@ -62,7 +62,7 @@ In the `surveys` table, `record_id` is the primary key and `plot_id` is a foreig
 |         2 |     7 |  16 | 1977 |       2 | PX         | M   |              33 |   0.23 |
 |         3 |     7 |  16 | 1978 |       1 | RO         | F   |              14 |   1.23 |
 
-<!--split-->
+===
 
 With a properly designed database, references to invalid foreign keys *cannot* be entered.
 
@@ -79,7 +79,7 @@ Error in sqliteSendQuery(con, statement, bind.data) :
 ~~~
 {:.output}
 
-<!--split-->
+===
 
 ## Normalized data is Tidy data
 
@@ -93,7 +93,7 @@ Data about the species is a different "observational unit" than data about the i
 With an ideal database design, any value discovered to be erroneous should only have to be corrected in one record in one table.
 {:.fragment}
 
-<!--split-->
+===
 
 Question
 : Currently, `plots` is pretty sparse. What other kind of data might go into plots?

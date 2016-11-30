@@ -9,13 +9,13 @@ Communication is therefore designed for networks: it involves a server applicati
 We are going to look at the Portal Mammals data on a server running PostgreSQL, which is an open-source database management system.
 The client we will use to communicate with the server is a browser-based application called PostgreSQL Studio, which is just one of very many clients that connects to a PostgreSQL database.
 
-<!--split-->
+===
 
 Point a browser to `pgstudio.research.sesync.org` and login.
 
 ![]({{ site.baseurl }}/images/pgstudio-login.png){: width="30%"}
 
-<!--split-->
+===
 
 Exercise
 : Examine the primary and foreign keys on the three tables. What columns make up the primary keys for each table? Are there many-to-one relationships? Are there many-to-many relationships?
@@ -27,7 +27,7 @@ Hint #2
 : The "Constraints" tab shows different types of constraints that govern a table.
 {:.fragment}
 
-<!--split-->
+===
 
 Reviews came back from the manuscript you submitted to Nature on the portal mammals project.
 The always humble Reviewer #2 suspects bias introduced by the surveyor and recommends controling for the identity of the observer that conducted each survey.
@@ -47,7 +47,7 @@ The command is written in **Structured Query Language (SQL)**, which is a langua
 In the next steps, you will use SQL to alter the portal database in response to the Reviewer.
 {:.fragment data-fragment-index="2"}
 
-<!--split-->
+===
 
 Select the ![]({{ site.baseurl }}/images/sql-button.png) button and run the following two scripts.
 The first script creates a new table, the second script adds a relationship to the `surveys` table.
@@ -69,7 +69,7 @@ ALTER TABLE surveys
 
 All of you? Yes, go ahead and *try it*.
 
-<!--split-->
+===
 
 In the `plots` table we see `integer` as the data type of the primary key.
 We used `serial`, a simple extension to the integer data type.
@@ -85,7 +85,7 @@ Question
 : What's your person_id?
 {.fragment}
 
-<!--split-->
+===
 
 The foreign key on `surveys.person_id` exists, now we need to populate the column with data.
 Choose a `record_id` you will use as `%record_id%` in the next command.
@@ -97,7 +97,7 @@ WHERE record_id = "%record_id%";
 ~~~
 {:.input .fragment}
 
-<!--split-->
+===
 
 To view the result of your update, and everyone elses, run the following query on the database.
 Two new SQL phrases come into play here: `SELECT ... FROM` and `JOIN`.
@@ -108,7 +108,7 @@ JOIN surveyor USING(person_id);
 ~~~
 {:.input}
 
-<!--split-->
+===
 
 Exercise
 : How would the solution be different if there were multiple surveyors for each survey? Pseudocode a couple database commands that would create tables to address the situation with multiple surveyors for each survey.

@@ -24,7 +24,7 @@ These characteristics could equally be applied to a spreadsheet, one that can be
 
 </aside>
 
-<!--split-->
+===
 
 ### Limitations of Data Files
 
@@ -43,7 +43,7 @@ Extensions
 API
 : {:.fragment} No standard approach for different application to read, edit or create records.
 
-<!--split-->
+===
 
 ### Database Solutions
 
@@ -62,55 +62,91 @@ Extension
 API
 : {:.fragment} There are packages native to every programming language that ease reading and writing to databases.
 
-<!--split-->
+===
 
 ## Database connections from R
 
-```{r message=FALSE, title="lesson-3.R", eval=FALSE}
+
+~~~r
 library(RPostgreSQL)
 con <- dbConnect(PostgreSQL(), host="pg.sesync.org", user="icarroll")
 dbListTables(con)
-```
+~~~
+{:.text-document title="lesson-3.R"}
 
-<!--split-->
+===
 
 ## Database connections from R
 
-```{r message=FALSE, title="lesson-3.R"}
+
+~~~r
 library(RSQLite)
 con <- dbConnect(SQLite(), "data/portal.sqlite")
 dbListTables(con)
-```
+~~~
+{:.text-document title="lesson-3.R"}
+~~~
+[1] "plots"   "species" "surveys"
+~~~
+{:.output}
 
-<!--split-->
+===
 
 ## Two ways to access data
 
 Read the data into an R data frame, and process it using R functions.
 
-```{r title="lesson-3.R"}
+
+~~~r
 plots <- dbReadTable(con, "plots")
 surveys <- dbReadTable(con, "surveys")
 species <- dbReadTable(con, "species")
-```
+~~~
+{:.text-document title="lesson-3.R"}
 
-```{r}
+
+~~~r
 str(surveys)
-```
+~~~
+{:.input}
+~~~
+'data.frame':	34786 obs. of  9 variables:
+ $ record_id      : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ month          : int  7 7 7 7 7 7 7 7 7 7 ...
+ $ day            : int  16 16 16 16 16 16 16 16 16 16 ...
+ $ year           : int  1977 1977 1977 1977 1977 1977 1977 1977 1977 1977 ...
+ $ plot_id        : int  2 3 2 7 3 1 2 1 1 6 ...
+ $ species_id     : chr  "NL" "NL" "DM" "DM" ...
+ $ sex            : chr  "M" "M" "F" "M" ...
+ $ hindfoot_length: int  32 33 37 36 35 14 NA 37 34 20 ...
+ $ weight         : int  NA NA NA NA NA NA NA NA NA NA ...
+~~~
+{:.output}
 
-<!--split-->
+===
 
 Let the database system process data.
 
-```{r title="lesson-3.R"}
+
+~~~r
 dbGetQuery(con, "select species_id, weight
                  from surveys
                  where plot_id = 1 limit 5")
-```
+~~~
+{:.text-document title="lesson-3.R"}
+~~~
+  species_id weight
+1         PF     NA
+2         DM     NA
+3         DM     NA
+4         PF      9
+5         DS     NA
+~~~
+{:.output}
 
 The string inside the brackets is an example of Structured Query Language (SQL). The SQL instructions tell the database system (SQLite, in this case) to sort out and return only the records requested.
 
-<!--split-->
+===
 
 ## Exercise 1
 

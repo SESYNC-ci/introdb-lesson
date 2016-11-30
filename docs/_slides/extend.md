@@ -15,7 +15,7 @@ A popular extension for PostgreSQL is PostGIS, which adds spatially aware data t
 | Raster    | Space as a grid of rectangular cells, associated with a numeric array/bands. |
 | Topology  | Models spatial objects as a network of connected nodes, edges, and faces.    |
 
-<!--split-->
+===
 
 PostGIS functions allow you to query your database on spatial relations, which act sort of like foreign key relationships.
 Jumping way ahead of ourselves, let's see an example of what PostGIS can do.
@@ -25,7 +25,7 @@ Log out of the `portal` database, and log in to the database `postgis_in_action`
 Question
 : Look at the different tables and find the fields with spatial data types. What type does `restaurants` have, and what type does `highways` have?
 
-<!--split-->
+===
 
 The following query will list the restaurant franchises in Maryland that are within 500 meters of a highway.
 

@@ -12,7 +12,7 @@
 [//]: # " - Glimpse spatial extensions in action "
 
 
-<!--split-->
+===
 	
 [//]: # " ## Specific Achievements "
 
