@@ -1,4 +1,11 @@
-# Site
+# Lesson
+
+title:
+handouts:
+tag:
+lesson:
+instructor:
+authors:
 
 title: "Database Principles and Use"
 handouts: worksheet.R
@@ -29,8 +36,8 @@ slide_sorter:
 
 # Style
 
-styleurl: https://cdn.rawgit.com/sesync-ci/lesson-style/1.0.1
-reveal: https://cdn.rawgit.com/hakimel/reveal.js/3.3.0
+styleurl: https://cdn.rawgit.com/sesync-ci/lesson-style/1.1/docs
+reveal: https://cdn.rawgit.com/hakimel/reveal.js/3.5.0
 
 # Jekyll
 
