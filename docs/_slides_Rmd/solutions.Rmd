@@ -12,9 +12,8 @@ df <- dbGetQuery(con, "select species_id, taxa, genus
                        from species")
 ```
 
-<aside class="notes" markdown="block">
 [Return](#exercise-1)
-</aside>
+{:.notes}
 
 ===
 
@@ -28,18 +27,5 @@ df <- dbGetQuery(con, "select weight, month, plot_type, taxa
                        where weight is not null")
 ```
 
-<aside class="notes" markdown="block">
 [Return](#exercise-2)
-</aside>
-
-
-
-
-
-
-
-
-
-
-
-
+{:.notes}

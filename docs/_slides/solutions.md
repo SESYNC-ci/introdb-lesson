@@ -12,11 +12,14 @@
 df <- dbGetQuery(con, "select species_id, taxa, genus
                        from species")
 ~~~
+
+~~~
+Error in dbGetQuery(con, "select species_id, taxa, genus\n                       from species"): could not find function "dbGetQuery"
+~~~
 {:.text-document title="lesson-3.R"}
 
-<aside class="notes" markdown="block">
 [Return](#exercise-1)
-</aside>
+{:.notes}
 
 ===
 
@@ -30,20 +33,11 @@ df <- dbGetQuery(con, "select weight, month, plot_type, taxa
                        join species on surveys.species_id = species.species_id
                        where weight is not null")
 ~~~
+
+~~~
+Error in dbGetQuery(con, "select weight, month, plot_type, taxa\n                       from surveys\n                       join plots on surveys.plot_id = plots.plot_id\n                       join species on surveys.species_id = species.species_id\n                       where weight is not null"): could not find function "dbGetQuery"
+~~~
 {:.text-document title="lesson-3.R"}
 
-<aside class="notes" markdown="block">
 [Return](#exercise-2)
-</aside>
-
-
-
-
-
-
-
-
-
-
-
-
+{:.notes}

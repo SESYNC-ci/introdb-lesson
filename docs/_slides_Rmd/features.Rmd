@@ -18,11 +18,8 @@ Table
 : A collection of records, each one uniquely identified by the value of one or more fields.
 : e.g. All records of small mammals that were observed in any survey.
 
-<aside class="notes" markdown="block">
-
 These characteristics could equally be applied to a spreadsheet, one that can be curated in a text file (e.g. a CSV file) as well as specialized formats (e.g. a MS Excel file).
-
-</aside>
+{:.notes}
 
 ===
 
@@ -117,3 +114,4 @@ The string inside the brackets is an example of Structured Query Language (SQL).
 ## Exercise 1
 
 Use `dbGetQuery()` to select the "species_id", and two other fields from the "species" table. Hint: use `dbListFields()` to check field names.
+B

@@ -6,6 +6,8 @@
 SQL is a high-level language for interacting with relational databases.
 Commands use intuitive English words but can be strung together and nested in powerful ways.
 
+We have used the "CREATE TABLE" and "INSERT" statements, but most SQL is written to perform "SELECT" statements.
+
 ===
 
 ## Basic queries
@@ -170,27 +172,19 @@ WHERE (year >= 2000 OR year <= 1990) AND species_id = 'DM';
 ```
 {:.text-document title="SQL Worksheet"}
 
-## Table definition
 
-The "SELECT" statements used to script queries are not the only time we need SQL.
-Table definition uses SQL's "CREATE TABLE" statements, as shown in the "Scripts" tab of PostgreSQL Studio.
 
-Simplified a bit, the [documentation](https://www.postgresql.org/docs/current/static/sql-createtable.html) for "CREATE TABLE" follows the pattern:
 
-```
-CREATE TABLE %table% {
-    %column_name% %data_type% [%option% ...],
-    ...
-}
-```
 
-===
 
-## Exercise
 
-Write the `CREATE TABLE` statement for a new "surveyors" table with fields for a "person_id", "first_name", and "last_name".
 
-===
+
+
+
+
+
+
 
 With a properly designed database, references to invalid foreign keys *cannot* be entered.
 
@@ -204,27 +198,5 @@ dbGetQuery(con, "insert into surveys
 ~~~
 Error in sqliteSendQuery(con, statement, bind.data) : 
   rsqlite_query_send: could not execute1: FOREIGN KEY constraint failed
-~~~
-{:.output}
-
-===
-
-
-
-
-
-
-
-
-~~~r
-dbGetQuery(con, "insert into plots
-                 (plot_id, plot_type)
-                 values (1, 'Control')")
-~~~
-{:.text-document title="lesson-3.R"}
-
-~~~
-Error in sqliteSendQuery(con, statement, bind.data) : 
-  rsqlite_query_send: could not execute1: UNIQUE constraint failed: plots.plot_id
 ~~~
 {:.output}
