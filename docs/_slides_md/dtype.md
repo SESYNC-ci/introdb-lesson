@@ -29,7 +29,7 @@ On one hand, because it is easier to aggregate fields than disaggregate them dow
 On the other hand, some consideration of how each field will get used can lead to less granularity.
 
 Question
-: In the surveys table, the date is broken into three integer fields. What are some advantages and disadvantages of such fine granularity over using a single field of type date?
+: In the animals table, the date is broken into three integer fields. What are some advantages and disadvantages of such fine granularity over using a single field of type date?
 
 Answer
 : {:.fragment} Advantages include easy selection by month, day or year. Disadvantages include difficulty of selecting by date range.

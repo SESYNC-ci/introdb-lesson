@@ -8,15 +8,15 @@ The examples below refer to the Portal mammals database.
 
 Field
 : The smallest unit of information, each having a label and holding a value of the same type.
-: e.g. The time of day during which a plot was surveyed.
+: e.g. The day on which a plot was surveyed.
 
 Record
 : A collection of related values, from different fields, that all describe the same entity.
-: e.g. The species, sex, size and location of a small mammal observed during a given survey.
+: e.g. The species, sex, weight and size of a small mammal captured during a survey.
   
 Table
 : A collection of records, each one uniquely identified by the value of a key field.
-: e.g. All records for a small mammal observed during any survey.
+: e.g. All records for small mammals observed during any survey.
 
 These characteristics could equally be applied to a spreadsheet, one that can be curated in a text file (e.g. a CSV file) as well as specialized formats (e.g. a MS Excel file).
 {:.notes}
@@ -73,7 +73,8 @@ The client we will use to communicate with the server is a browser-based applica
 
 Open PostgreSQL Studio and login with the connection parameters:
 
-![]({{ site.baseurl }}/images/pgstudio-login-1.png){:width="30%"}
+![]({{ site.baseurl }}/images/pgstudio-login-1.png){:width="40%"}
+{:.captioned}
 
 A more typical database host would be a URL or IP address. Using "localhost" is unusual in that the server is not typically on the same system as the client.
 {:.notes}
@@ -90,6 +91,6 @@ Scripts
 
 ===
 
-## Exercise
+## Exercise 1
 
 Study the "Columns" and "Script" tabs for the species table. Pick a field that is currently allowed to be null, and guess how to re-write the script beginning with `CREATE TABLE` to prohibit null values in the database.

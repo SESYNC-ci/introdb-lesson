@@ -21,31 +21,31 @@ Query
 
 ## Primary key
 
-In the `plots` table, `plot_id` is the primary key. Any new record *cannot* duplicate an existing plot_id.
+In the `plots` table, `id` is the primary key. Any new record *cannot* duplicate an existing id.
 
-| plot_id | plot_type        |
-|---------+------------------|
-|       1 | Control          |
-|       2 | Rodent Exclosure |
-|       3 | Control          |
+| id | treatment        |
+|----+------------------|
+|  1 | Control          |
+|  2 | Rodent Exclosure |
+|  3 | Control          |
 
 ===
 
 Question
-: What would be the primary key in the surveys table. How do you know?
+: What would be the primary key in the animals table. How do you know?
+
 Answer
-: {:.fragment} The primary key is `plot_id`, as shown in the table definition script.
+: {:.fragment} The primary key is `id`, as shown in the table definition script.
 
 ===
 
 Primary keys are checked before duplicates end up in the data:
 
-~~~r
-INSERT INTO plots (plot_id, plot_type)
+~~~
+INSERT INTO plots (id, treatment)
 VALUES (1, 'Control');
 ~~~
 {:.text-document title="SQL Worksheet"}
-
 
 ===
 
@@ -54,29 +54,27 @@ VALUES (1, 'Control');
 A field may also be designated as a foreign key, which establishes a relationship between tables. A foreign key points to some primary key from a different table.
 
 
-The "Constraints" tab shows two foreign keys associated with the "surveys" table.
+The "Constraints" tab shows two foreign keys associated with the "animals" table.
 
-- The field `surveys(plot_id)` points to the field `plots(plot_id)`
-- The field `surveys(species_id)` points to the field `species(species_id)`
+- The field `animals(plot_id)` points to the field `plots(id)`
+- The field `animals(species_id)` points to the field `species(id)`
 
 ===
 
-## Foreign key
+In the `animals` table, `id` is the primary key and both `plot_id` and `species_id` are foreign keys.
 
-In the `surveys` table, `record_id` is the primary key and both `plot_id` and `species_id` are foreign keys.
-
-| record_id | month | day | year | plot_id | species_id | sex | hindfoot_length | weight |
-|-----------+-------+-----+------+---------+------------+-----+-----------------+--------|
-|         1 |     7 |  16 | 1977 |       2 | ST         | M   |              32 |   0.45 |
-|         2 |     7 |  16 | 1977 |       2 | PX         | M   |              33 |   0.23 |
-|         3 |     7 |  16 | 1978 |       1 | RO         | F   |              14 |   1.23 |
+| id | month | day | year | plot_id | species_id | sex | hindfoot_length | weight |
+|----+-------+-----+------+---------+------------+-----+-----------------+--------|
+|  1 |     7 |  16 | 1977 |       2 | ST         | M   |              32 |   0.45 |
+|  2 |     7 |  16 | 1977 |       2 | PX         | M   |              33 |   0.23 |
+|  3 |     7 |  16 | 1978 |       1 | RO         | F   |              14 |   1.23 |
 
 ===
 
 Foreign keys are checked before nonsensical references end up in the data:
 
-~~~r
-INSERT INTO surveys (record_id, plot_id)
+~~~
+INSERT INTO animals (id, plot_id)
 VALUES (35550, 789);
 ~~~
 {:.text-document title="SQL Worksheet"}

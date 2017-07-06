@@ -12,11 +12,11 @@ We have used the "CREATE TABLE" and "INSERT" statements, but most SQL is written
 
 ## Basic queries
 
-Let’s write a SQL query that selects only the year column from the surveys
-table. Select the ![]({{ site.baseurl }}/images/sql-button.png) button, paste in and run the following script.
+Let’s write a SQL query that selects only the year column from the animals
+table. Select the ![]({{ site.baseurl }}/images/sql-button.png){:style="vertical-align:middle"} button, paste in and run the following script.
 
 ```
-SELECT year FROM surveys;
+SELECT year FROM animals;
 ```
 {:.text-document title="SQL Worksheet"}
 	
@@ -29,7 +29,7 @@ To select data from multiple fields, include multiple fields as a comma-separate
 
 ```
 SELECT year, month, day
-FROM surveys;
+FROM animals;
 ```
 {:.text-document title="SQL Worksheet"}
 
@@ -41,9 +41,11 @@ Or select all of the columns in a table using a wildcard:
 
 ```
 SELECT *
-FROM surveys;
+FROM animals;
 ```
 {:.text-document title="SQL Worksheet"}
+
+===
 
 ### Limit
 
@@ -52,10 +54,12 @@ a feel for very large tables.
 
 ```
 SELECT year, species_id
-FROM surveys
+FROM animals
 LIMIT 10;
 ```
 {:.text-document title="SQL Worksheet"}
+
+===
 
 ### Unique values
 
@@ -64,7 +68,7 @@ been sampled we use ``DISTINCT``
 
 ```
 SELECT DISTINCT species_id
-FROM surveys;
+FROM animals;
 ```
 {:.text-document title="SQL Worksheet"}
 
@@ -73,10 +77,12 @@ returned
 
 ```
 SELECT DISTINCT year, species
-FROM surveys;
+FROM animals;
 ```
 {:.text-document title="SQL Worksheet"}
-	
+
+===
+
 ### Calculated values
 
 We can also do calculations with the values in a query.
@@ -85,7 +91,7 @@ on different dates, but we needed it in kg instead of g we would use
 
 ```
 SELECT year, month, day, weight / 1000.0
-FROM surveys;
+FROM animals;
 ```
 {:.text-document title="SQL Worksheet"}
 
@@ -99,7 +105,7 @@ example, we could round the values to make them easier to read.
 
 ```
 SELECT plot_id, species_id, sex, weight, ROUND(weight / 1000.0, 2)
-FROM surveys;
+FROM animals;
 ```
 {:.text-document title="SQL Worksheet"}
 
@@ -113,13 +119,17 @@ You can assign the new column a name by typing "AS weight_kg" after the expressi
 
 ```
 SELECT plot_id, species_id, sex, weight, ROUND(weight / 1000.0, 2) AS weight_kg
-FROM surveys;
+FROM animals;
 ```
 {:.text-document title="SQL Worksheet"}
 
-## Exercise
+===
 
-Write a query that returns the year, month, day, species ID, and weight in mg.
+## Exercise 3
+
+Write a query that returns the year, month, day, species id, and weight in mg of each animal.
+
+===
 
 ## Filtering
 
@@ -130,7 +140,7 @@ query:
 
 ```
 SELECT *
-FROM surveys
+FROM animals
 WHERE species_id = 'DM';
 ```
 {:.text-document title="SQL Worksheet"}
@@ -142,7 +152,7 @@ Here, we only want the data since 2000:
 
 ```
 SELECT *
-FROM surveys
+FROM animals
 WHERE year >= 2000;
 ```
 {:.text-document title="SQL Worksheet"}
@@ -155,7 +165,7 @@ For example, suppose we want the data on Dipodomys merriami starting in the year
 
 ```
 SELECT *
-FROM surveys
+FROM animals
 WHERE year >= 2000 AND species_id = 'DM';
 ```
 {:.text-document title="SQL Worksheet"}
@@ -163,40 +173,11 @@ WHERE year >= 2000 AND species_id = 'DM';
 ===
 
 Parentheses can be used to help with readability and to ensure that AND and OR are combined in the way that we
-intend. If we wanted to get all the surveys for "DM" since 2000 or up to 1990 we could combine the tests using OR:
+intend. If we wanted to get all the animals for "DM" since 2000 or up to 1990 we could combine the tests using OR:
 
 ```
 SELECT *
-FROM surveys
+FROM animals
 WHERE (year >= 2000 OR year <= 1990) AND species_id = 'DM';
 ```
 {:.text-document title="SQL Worksheet"}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-With a properly designed database, references to invalid foreign keys *cannot* be entered.
-
-~~~r
-dbGetQuery(con, "insert into surveys
-                 (record_id, plot_id, species_id, sex)
-                 values (35549, 1, '00', 'M')")
-~~~
-{:.text-document title="lesson-3.R"}
-
-~~~
-Error in sqliteSendQuery(con, statement, bind.data) : 
-  rsqlite_query_send: could not execute1: FOREIGN KEY constraint failed
-~~~
-{:.output}

@@ -10,5 +10,5 @@ We have just skimmed the topic of **concurrency** in database interactions: ther
 The ability to precisely define keys and data types is the primary database feature that guaranties **reliability**. As you develop scripts for analysis and vizualization, certainty that you'll never encounter a "NaN" when you expect an Integer will prevent, or help you catch, bugs in your code.
 {:.fragment}
 
-The third major feature to motivate databae use, **scaleability**, remains for you to discover. Very large tables can be queried, sorted and combined quickly when the work is done by a powerful database system outside of R.
+The third major feature to motivate databae use, **scaleability**, remains for you to discover. Very large tables can be queried, sorted and combined quickly when the work is done by a powerful relational database management system (RDBMS), such as PostgreSQL.
 {:.fragment}
