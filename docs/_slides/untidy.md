@@ -1,7 +1,7 @@
 ---
 ---
 
-## Normalized data is Tidy data
+## Normalized data is Tidy
 
 Proper use of table relationships is a challenging part of database design.
 The objective is **normalization**, or taking steps to define logical "observational units" and minimize data redundency.
@@ -19,14 +19,14 @@ Question
 : Currently, `plots` is pretty sparse. What other kind of data might go into plots?
 
 Answer
-: {:.framgnet} Additional properties, such as location, that do not change between surveys.
+: {:.fragment} Additional properties, such as location, that do not change between surveys.
 
 ===
 
 ## Un-tidy data with JOINs
 
-Record, store, and read data in the most normalized form possible. Only untidy your tables as needed for particular analyses.
-The most common operation for untidying is to "join" tables.
+Record, store, and read data in the most normalized form possible. Only un-tidy your tables as needed for particular analyses.
+The SQL "JOIN" clause lets you create records with fields from multiple tables.
 
 For example, to carry out a regression of animal weight against plot treatment using the R command:
 
@@ -39,7 +39,7 @@ you'll need a data.frame called `portal` with rows for each animal that also inc
 
 ===
 
-Now suppose you want to statistically control for genus in this regression, using the R command:
+Now suppose you want to account for genus in this regression, using the R command:
 
 ```
 lm(weight ~ genus + treatment, data = portal)
@@ -51,8 +51,6 @@ You'll need an additional column for genus in the `portal` data.frame inferred f
 ===
 
 ## Relations
-
-The creation of an "untidy" table should scripted and it's life temporary: make untidy tables with a query including a "JOIN" clause.
 
 There are two kinds of relations -- schemas that use primary and foreign key references -- that permit table joins:
 
@@ -81,7 +79,7 @@ The SQL keyword "JOIN" matches up two tables in the way dictated by the constrai
 ```
 SELECT weight, treatment
 FROM animals
-JOIN plots ON animals.plot_id = plots.id
+JOIN plots ON animals.plot_id = plots.id;
 ```
 {:.text-document title="SQL Worksheet"}
 
@@ -104,7 +102,7 @@ Animals is an "association table" because it includes two foreign keys.
 SELECT weight, genus, treatment
 FROM animals
 JOIN plots ON animals.plot_id = plots.id
-JOIN species ON animals.species_id = species.id
+JOIN species ON animals.species_id = species.id;
 ```
 {:.text-document title="SQL Worksheet"}
 
