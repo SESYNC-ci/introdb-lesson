@@ -76,7 +76,7 @@ If we select more than one column, then the distinct pairs of values are
 returned
 
 ```
-SELECT DISTINCT year, species
+SELECT DISTINCT year, species_id
 FROM animals;
 ```
 {:.text-document title="SQL Worksheet"}
