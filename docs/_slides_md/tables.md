@@ -93,4 +93,4 @@ Scripts
 
 ## Exercise 1
 
-Study the "Columns" and "Script" tabs for the species table. Pick a field that is currently allowed to be null, and guess how to re-write the script beginning with `CREATE TABLE` to prohibit null values in the database.
+Study the "Columns" and "Script" tabs for the species table. Pick a field that is currently allowed to be null, and guess how you would write a script beginning with `CREATE TABLE species` to prohibit null values in the database.
