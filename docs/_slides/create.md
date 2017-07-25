@@ -19,7 +19,7 @@ CREATE TABLE [%schema%.]%table% (
 
 ## Exercise 2
 
-Write the `CREATE TABLE` statement for a new "observers" table with fields for "id" and "name".
+Write and execute a `CREATE TABLE` statement for a new "observers" table with fields for "id" and "name". Check that the new table exists (you may have to refresh the list).
 
 ===
 
