@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	  <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Database Principles and Use</title>
+<meta name="description" content="First look at relational databases.">
+<link rel="canonical" href="https://sesync-ci.github.io/introdb-lesson/course/archive.html">
+<link rel="stylesheet" href="/introdb-lesson/css/default.css">
+<link rel="stylesheet" href="/introdb-lesson/css/static.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
+
+	  <link rel="stylesheet" href="https://cdn.rawgit.com/sesync-ci/lesson-style/v1.2/docs/css/static.css">
+  </head>
+  <body>
+	  <div class="page-content">
+	    <div class="wrapper">
+        
+        
+<h1 style="text-transform: none;" id="database-principles-and-use">Database Principles and Use</h1>
+
+<p>Lesson 3 with <em>Benoît Parmentier</em></p>
+
+<h2 id="contents">Contents</h2>
+
+<ul>
+  <li><a href="#/slides/goals">What good is a database?</a></li>
+  <li><a href="#/slides/intro">The Portal Project</a></li>
+  <li><a href="#/slides/tables">Characteristics of a Database: Part I</a></li>
+  <li><a href="#/slides/create">Table definition</a></li>
+  <li><a href="#/slides/keys">Characteristics of a Database: Part II</a></li>
+  <li><a href="#/slides/query">Structured Query Language (SQL)</a></li>
+  <li><a href="#/slides/untidy">Normalized data is Tidy</a></li>
+  <li><a href="#/slides/summary">Summary</a></li>
+  <li><a href="#/slides/md_solutions">Solutions</a></li>
+</ul>
+
+<hr />
+
+<p><a name="/slides/goals"></a></p>
+
+<h2 id="what-good-is-a-database">What good is a database?</h2>
+
+<p>For a team of researchers implementing a collaborative workflow, the top reasons to use a database are:</p>
+
+<ol>
+  <li><strong>concurrency</strong> - Multiple users can safely read and edit database entries simultaneously.</li>
+  <li><strong>reliability</strong> - Relational databases formalize and can enforce concepts of “tidy” data.</li>
+  <li><strong>scalability</strong> - Very large tables can be read, searched, and merged quickly.</li>
+</ol>
+
+<h2 id="objectives">Objectives</h2>
+
+<ul>
+  <li>Understand how a database differs from a data file</li>
+  <li>Discover relational databases</li>
+  <li>Meet Structured Query Language (SQL)</li>
+  <li>Recognize the value of typed data
+<!-- - Glimpse spatial extensions in action --></li>
+</ul>
+
+<h2 id="specific-achievements">Specific Achievements</h2>
+
+<ul>
+  <li>Access a database on a PostgreSQL server</li>
+  <li>Create a table and view table definitions</li>
+  <li>Insert records one at a time into a table</li>
+  <li>Check primary and foreign key constraints
+<!-- - Alter the definition of an existing table --></li>
+</ul>
+
+<!--
+## Specific Achievements
+
+- Access a SQLite database from R
+- Select data to read into data frame
+- Test primary and foreign key constraints
+-->
+
+<p class="ToS"><a href="#/slides/goals">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/intro"></a></p>
+
+<h2 id="the-portal-project">The Portal Project</h2>
+
+<p class="captioned"><img src="/introdb-lesson/images/portal-oct-07-15.jpg" alt="" width="40%" /><br />
+<em>Credit: <a href="https://portalproject.wordpress.com">The Portal Project</a></em></p>
+
+<p>The Portal Project is a long-term ecological study being conducted near Portal, AZ.
+Since 1977, the site has been a primary focus of research on interactions among rodents, ants and plants and their respective responses to climate.</p>
+
+<p class="captioned"><img src="/introdb-lesson/images/portalview.jpg" alt="" width="50%" /><br />
+<em>Credit: <a href="https://portalproject.wordpress.com">The Portal Project</a></em></p>
+
+<p>The research site consists of many plots – patches of the Arizona desert that are intensively manipulated and repeatedly surveyed.
+The plots have some fixed characteristics, such as the type of manipulation, geographic location, aspect, etc.</p>
+
+<p class="captioned"><img src="/introdb-lesson/images/img_19771.jpg" alt="" width="40%" /><br />
+<em>Credit: <a href="https://portalproject.wordpress.com">The Portal Project</a></em></p>
+
+<p>The plots have a lot of dynamic characteristics, and those changes are recorded in repeated surveys.
+In particular, the animals captured during each survey are identified to species, weighed, and measured.</p>
+
+<p class="captioned"><img src="/introdb-lesson/images/gkr2.jpg" alt="" width="50%" /><br />
+<em>Credit: <a href="https://portalproject.wordpress.com">The Portal Project</a></em></p>
+
+<p>Data from the Portal project is recorded in a relational database designed for reliable storage &amp; rapid access to the bounty of information produced by this long-term ecological experiment. This lesson uses the real data, that has been analyzed in over 100 publications.</p>
+
+<p class="notes">The data has been simplified just a little bit for the workshop, but you can download the
+<a href="http://esapubs.org/archive/ecol/E090/118/">full dataset</a> and work with it using exactly the same tools we learn today.</p>
+
+<p>The three key tables in the relational database are:</p>
+
+<ul>
+  <li><strong>plots</strong></li>
+  <li><strong>animals</strong></li>
+  <li><strong>species</strong></li>
+</ul>
+
+<p class="ToS"><a href="#/slides/intro">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/tables"></a></p>
+
+<h2 id="characteristics-of-a-database-part-i">Characteristics of a Database: Part I</h2>
+
+<p>Most database terminology is the same as that used for characterizing data files.
+The examples below refer to the Portal mammals database.</p>
+
+<dl>
+  <dt>Field</dt>
+  <dd>The smallest unit of information, each having a label and holding a value of the same type.</dd>
+  <dd>e.g. The day on which a plot was surveyed.</dd>
+  <dt>Record</dt>
+  <dd>A collection of related values, from different fields, that all describe the same entity.</dd>
+  <dd>e.g. The species, sex, weight and size of a small mammal captured during a survey.</dd>
+  <dt>Table</dt>
+  <dd>A collection of records, each one uniquely identified by the value of a key field.</dd>
+  <dd>e.g. All records for small mammals observed during any survey.</dd>
+</dl>
+
+<p class="notes">These characteristics could equally be applied to a spreadsheet, one that can be curated in a text file (e.g. a CSV file) as well as specialized formats (e.g. a MS Excel file).</p>
+
+<h2 id="limitations-of-data-files">Limitations of Data Files</h2>
+
+<dl>
+  <dt>Collaboration</dt>
+  <dd class="fragment">Email copies among collaborators, store in the cloud (sync issues) or share on a network (user collision).</dd>
+  <dt>Size</dt>
+  <dd class="fragment">Reading an entire data file into memory isn’t scaleable. Some file types (e.g. MS Excel files) have size limits.</dd>
+  <dt>Quality</dt>
+  <dd class="fragment">Enforcing restrictions on values is not the default behaviour of software that writes data files.</dd>
+  <dt>Extensions</dt>
+  <dd class="fragment">Specialized files are needed for non-traditional data types (e.g. ESRI Shapefiles).</dd>
+  <dt>API</dt>
+  <dd class="fragment">No standard approach for different application to read, edit or create records.</dd>
+</dl>
+
+<h2 id="database-solutions">Database Solutions</h2>
+
+<dl>
+  <dt>Collaboration</dt>
+  <dd class="fragment">A database accepts simultaneous users, which is most beneficial when the database is hosted on a server. There are never multiple copies of the data (aside from backups!)</dd>
+  <dt>Size</dt>
+  <dd class="fragment">The database management system only reads requested parts of the data into memory. There are no size limits.</dd>
+  <dt>Quality</dt>
+  <dd class="fragment">Data types are enforced by default. No database lets you “accidentally” enter letters (e.g. “N.A.”) in a field for integers.</dd>
+  <dt>Extension</dt>
+  <dd class="fragment">Special packages are needed for non-traditional data types, but they can live in the same table as traditional ones.</dd>
+  <dt>API</dt>
+  <dd class="fragment">There are packages native to every programming language that ease reading and writing to databases.</dd>
+</dl>
+
+<h2 id="the-database-server">The Database Server</h2>
+
+<p>A relational database management system (RDBMS) that resides on a server is ideal for collaborative, data-driven projects.
+Communication is therefore accross a network: it involves a server application and a client application.</p>
+
+<p>We are going to look at the Portal mammals data on a server running PostgreSQL, which is an open-source database management system.
+The client we will use to communicate with the server is a browser-based application called PostgreSQL Studio, which is just one of very many clients that connects to a PostgreSQL database.</p>
+
+<p>Open PostgreSQL Studio and login with the connection parameters:</p>
+
+<p class="captioned"><img src="/introdb-lesson/images/pgstudio-login-1.png" alt="" width="40%" /></p>
+
+<p class="notes">A more typical database host would be a URL or IP address. Using “localhost” is unusual in that the server is not typically on the same system as the client.</p>
+
+<p>The “Data” tab provides a quick preview of some records. The “Columns” and “Scripts” tabs provide detailed information on how data types are set on the different fields.</p>
+
+<dl>
+  <dt>Columns</dt>
+  <dd>Most are integer or text data, and “nullable” fields allow missing data (regardless of data type).</dd>
+  <dt>Scripts</dt>
+  <dd>The Structured Query Language (SQL) statement that defines each table.</dd>
+</dl>
+
+<h2 id="exercise-1">Exercise 1</h2>
+
+<p>Study the “Columns” and “Script” tabs for the species table. Pick a field that is currently allowed to be null, and guess how you would write a script beginning with <code class="highlighter-rouge">CREATE TABLE species</code> to prohibit null values in the database.</p>
+
+<p class="ToS"><a href="#/slides/tables">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/create"></a></p>
+
+<h2 id="table-definition">Table definition</h2>
+
+<p>Table definition uses PostgreSQL  “CREATE TABLE” statements, as shown in the “Scripts” tab of PGStudio.</p>
+
+<p>Simplified a bit, the <a href="https://www.postgresql.org/docs/current/static/sql-createtable.html">documentation</a> for “CREATE TABLE” follows the pattern:</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>CREATE TABLE [%schema%.]%table% (
+  %column_name% %data_type% [%option% ...],
+    ...
+);
+</code></pre>
+</div>
+
+<h2 id="exercise-2">Exercise 2</h2>
+
+<p>Write and execute a <code class="highlighter-rouge">CREATE TABLE</code> statement for a new “observers” table with fields for “id” and “name”. Check that the new table exists (you may have to refresh the list).</p>
+
+<h2 id="insert">Insert</h2>
+
+<p>The “INSERT” statement provides one way to populate a table with records:</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>INSERT INTO observers
+VALUES (1, 'Alice'), (2, 'Bob');
+</code></pre>
+</div>
+
+<p class="notes">From the database server’s perspective, tables are populated with some form of “INSERT” statement.
+There are many mechanisms that database clients devise to facilitate importing large data files.
+PGStudio, for example, provides a CSV file upload link on the “Data” tab.
+A reproducible pipeline that moves data from flat files into a database, however, should include imporation in a script – and this depends on the data files.</p>
+
+<p class="ToS"><a href="#/slides/create">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/keys"></a></p>
+
+<h2 id="characteristics-of-a-database-part-ii">Characteristics of a Database: Part II</h2>
+
+<p>Returning to the big picture, some database terminology doesn’t apply to data files at all.
+Databases include multiple tables, just as MS Excel includes a multiple spreadsheets in a workbook.
+The collection of tables in a <strong>relational database</strong>, however, can be structured by built-in relationships between records from different tables.
+Data is assembled in the correct arrangement and “just in time” for analysis using scripted <strong>queries</strong>.</p>
+
+<dl>
+  <dt>Primary key</dt>
+  <dd class="fragment">One or more fields (but <em>usually</em> one) that uniquely identify a record in a table.</dd>
+  <dt>Foreign key</dt>
+  <dd class="fragment">A primary key from one table used in different table to establish a relationship.</dd>
+  <dt>Query</dt>
+  <dd class="fragment">A temporary table that subsets and/or merges tables according to query parameters.</dd>
+</dl>
+
+<h2 id="primary-key">Primary key</h2>
+
+<p>In the <code class="highlighter-rouge">plots</code> table, <code class="highlighter-rouge">id</code> is the primary key. Any new record <em>cannot</em> duplicate an existing id.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>treatment</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Control</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Rodent Exclosure</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Control</td>
+    </tr>
+  </tbody>
+</table>
+
+<dl>
+  <dt>Question</dt>
+  <dd>What would be the primary key in the animals table. How do you know?</dd>
+  <dt>Answer</dt>
+  <dd class="fragment">The primary key is <code class="highlighter-rouge">id</code>, as shown in the table definition script.</dd>
+</dl>
+
+<p>Primary keys are checked before duplicates end up in the data:</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>INSERT INTO plots (id, treatment)
+VALUES (1, 'Control');
+</code></pre>
+</div>
+
+<h2 id="foreign-key">Foreign key</h2>
+
+<p>A field may also be designated as a foreign key, which establishes a relationship between tables. A foreign key points to some primary key from a different table.</p>
+
+<p>The “Constraints” tab shows two foreign keys associated with the “animals” table.</p>
+
+<ul>
+  <li>The field <code class="highlighter-rouge">animals(plot_id)</code> points to the field <code class="highlighter-rouge">plots(id)</code></li>
+  <li>The field <code class="highlighter-rouge">animals(species_id)</code> points to the field <code class="highlighter-rouge">species(id)</code></li>
+</ul>
+
+<p>In the <code class="highlighter-rouge">animals</code> table, <code class="highlighter-rouge">id</code> is the primary key and both <code class="highlighter-rouge">plot_id</code> and <code class="highlighter-rouge">species_id</code> are foreign keys.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>month</th>
+      <th>day</th>
+      <th>year</th>
+      <th>plot_id</th>
+      <th>species_id</th>
+      <th>sex</th>
+      <th>hindfoot_length</th>
+      <th>weight</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>7</td>
+      <td>16</td>
+      <td>1977</td>
+      <td>2</td>
+      <td>ST</td>
+      <td>M</td>
+      <td>32</td>
+      <td>0.45</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>7</td>
+      <td>16</td>
+      <td>1977</td>
+      <td>2</td>
+      <td>PX</td>
+      <td>M</td>
+      <td>33</td>
+      <td>0.23</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>7</td>
+      <td>16</td>
+      <td>1978</td>
+      <td>1</td>
+      <td>RO</td>
+      <td>F</td>
+      <td>14</td>
+      <td>1.23</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Foreign keys are checked before nonsensical references end up in the data:</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>INSERT INTO animals (id, plot_id)
+VALUES (35550, 789);
+</code></pre>
+</div>
+
+<h2 id="query">Query</h2>
+
+<p>The “Data” tab is an example of a query. It is a temporary table generated on-demand by the RDBMS that takes a subset of the first 25 records from a particular table and displays all columns.</p>
+
+<p class="ToS"><a href="#/slides/keys">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/query"></a></p>
+
+<h2 id="structured-query-language-sql">Structured Query Language (SQL)</h2>
+
+<p>SQL is a high-level language for interacting with relational databases.
+Commands use intuitive English words but can be strung together and nested in powerful ways.</p>
+
+<p>We have used the “CREATE TABLE” and “INSERT” statements, but most SQL is written to perform “SELECT” statements.</p>
+
+<h2 id="basic-queries">Basic queries</h2>
+
+<p>Let’s write a SQL query that selects only the year column from the animals
+table. Select the <img src="/introdb-lesson/images/sql-button.png" alt="" style="vertical-align:middle" /> button, paste in and run the following script.</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT year FROM animals;
+</code></pre>
+</div>
+
+<p>A note on style: we have capitalized the words SELECT and FROM because they are SQL keywords.
+Unlike R, SQL is case insensitive, but it helps for readability – good style.</p>
+
+<p>To select data from multiple fields, include multiple fields as a comma-separated list right after SELECT:</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT year, month, day
+FROM animals;
+</code></pre>
+</div>
+
+<p>The line break before <code class="highlighter-rouge">FROM</code> is also good form, particularly as the length of the query grows.</p>
+
+<p>Or select all of the columns in a table using a wildcard:</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT *
+FROM animals;
+</code></pre>
+</div>
+
+<h3 id="limit">Limit</h3>
+
+<p>We can use the LIMIT statement to select only the first few rows. This is particularly helpful when getting
+a feel for very large tables.</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT year, species_id
+FROM animals
+LIMIT 10;
+</code></pre>
+</div>
+
+<h3 id="unique-values">Unique values</h3>
+
+<p>If we want only the unique values so that we can quickly see what species have
+been sampled we use <code class="highlighter-rouge">DISTINCT</code></p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT DISTINCT species_id
+FROM animals;
+</code></pre>
+</div>
+
+<p>If we select more than one column, then the distinct pairs of values are
+returned</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT DISTINCT year, species_id
+FROM animals;
+</code></pre>
+</div>
+
+<h3 id="calculated-values">Calculated values</h3>
+
+<p>We can also do calculations with the values in a query.
+For example, if we wanted to look at the mass of each individual
+on different dates, but we needed it in kg instead of g we would use</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT year, month, day, weight / 1000.0
+FROM animals;
+</code></pre>
+</div>
+
+<p>The expression <code class="highlighter-rouge">weight / 1000.0</code> is evaluated for each row
+and appended to that row, in a new column.</p>
+
+<p>Expressions can use any fields, any arithmetic operators (+ - * /) and a variety of built-in functions. For
+example, we could round the values to make them easier to read.</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT plot_id, species_id, sex, weight, ROUND(weight / 1000.0, 2)
+FROM animals;
+</code></pre>
+</div>
+
+<p class="notes">The underlying data in the wgt column of the table does not change. The query, which exists separately from the data,
+simply displays the calculation we requested in the query result window pane.</p>
+
+<p>You can assign the new column a name by typing “AS weight_kg” after the expression</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT plot_id, species_id, sex, weight, ROUND(weight / 1000.0, 2) AS weight_kg
+FROM animals;
+</code></pre>
+</div>
+
+<h2 id="exercise-3">Exercise 3</h2>
+
+<p>Write a query that returns the year, month, day, species id, and weight in mg of each animal.</p>
+
+<h2 id="filtering">Filtering</h2>
+
+<p>Databases can also filter data – selecting only those records meeting certain
+criteria.  For example, let’s say we only want data for the species “Dipodomys
+merriami”, which has a species code of “DM”.  We need to add a WHERE clause to our
+query:</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT *
+FROM animals
+WHERE species_id = 'DM';
+</code></pre>
+</div>
+
+<p>We can do the same thing with numbers.
+Here, we only want the data since 2000:</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT *
+FROM animals
+WHERE year &gt;= 2000;
+</code></pre>
+</div>
+
+<p>More sophisticated conditions arise from combining tests with AND and OR.
+For example, suppose we want the data on Dipodomys merriami starting in the year
+2000:</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT *
+FROM animals
+WHERE year &gt;= 2000 AND species_id = 'DM';
+</code></pre>
+</div>
+
+<p>Parentheses can be used to help with readability and to ensure that AND and OR are combined in the way that we
+intend. If we wanted to get all the animals for “DM” since 2000 or up to 1990 we could combine the tests using OR:</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT *
+FROM animals
+WHERE (year &gt;= 2000 OR year &lt;= 1990) AND species_id = 'DM';
+</code></pre>
+</div>
+
+<p class="ToS"><a href="#/slides/query">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/untidy"></a></p>
+
+<h2 id="normalized-data-is-tidy">Normalized data is Tidy</h2>
+
+<p>Proper use of table relationships is a challenging part of database design.
+The objective is <strong>normalization</strong>, or taking steps to define logical “observational units” and minimize data redundency.</p>
+
+<p class="fragment">For example, the genus and species names are not attributes of an animal: they are attributes of the species attributed to an animal.
+Data about a species belongs in a different observational unit from data about the animal captured in a survey.</p>
+
+<p class="fragment">With an ideal database design, any value discovered to be erroneous should only have to be corrected in one record in one table.</p>
+
+<dl>
+  <dt>Question</dt>
+  <dd>Currently, <code class="highlighter-rouge">plots</code> is pretty sparse. What other kind of data might go into plots?</dd>
+  <dt>Answer</dt>
+  <dd class="fragment">Additional properties, such as location, that do not change between surveys.</dd>
+</dl>
+
+<h2 id="un-tidy-data-with-joins">Un-tidy data with JOINs</h2>
+
+<p>Record, store, and read data in the most normalized form possible. Only un-tidy your tables as needed for particular analyses.
+The SQL “JOIN” clause lets you create records with fields from multiple tables.</p>
+
+<p>For example, to carry out a regression of animal weight against plot treatment using the R command:</p>
+
+<div class="input highlighter-rouge"><pre class="highlight"><code>lm(weight ~ treatment, data = portal)
+</code></pre>
+</div>
+
+<p>you’ll need a data.frame called <code class="highlighter-rouge">portal</code> with rows for each animal that also includes a “treatment” inferred from “plot_id”.</p>
+
+<p>Now suppose you want to account for genus in this regression, using the R command:</p>
+
+<div class="input highlighter-rouge"><pre class="highlight"><code>lm(weight ~ genus + treatment, data = portal)
+</code></pre>
+</div>
+
+<p>You’ll need an additional column for genus in the <code class="highlighter-rouge">portal</code> data.frame inferred from the “species_id” and species table.</p>
+
+<h2 id="relations">Relations</h2>
+
+<p>There are two kinds of relations – schemas that use primary and foreign key references – that permit table joins:</p>
+
+<ul>
+  <li>One-To-Many</li>
+  <li>Many-To-Many</li>
+</ul>
+
+<h3 id="one-to-many-relationship">One-To-Many Relationship</h3>
+
+<p>The primary key in the first table is referred to multiple times in the foreign key of the second table.</p>
+
+<p class="captioned"><img src="/introdb-lesson/images/many-to-one-1.svg" alt="" width="80%" style="border:0px;" /></p>
+
+<h2 id="exercise-4">Exercise 4</h2>
+
+<p>Examine the primary and foreign keys on the three tables by checking the “Columns” and “Constraints” tabs. Identify all the one-to-many relationships.</p>
+
+<p>The SQL keyword “JOIN” matches up two tables in the way dictated by the constraint following “ON”, duplicating records as necessary.</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT weight, treatment
+FROM animals
+JOIN plots ON animals.plot_id = plots.id;
+</code></pre>
+</div>
+
+<p>The resulting table could be the basis for the <code class="highlighter-rouge">portal</code> data.frame needed in the R command <code class="highlighter-rouge">lm(weight ~ treatment, data = portal)</code>.</p>
+
+<h3 id="many-to-many-relationship">Many-To-Many Relationship</h3>
+
+<p>Each primary key from the first table may relate to any number of primary keys from the second table, and <em>vice versa</em>.  eachother any number of times. A many-to-many relationship is induced by the existance of an “association table” involved in <strong>two</strong> one-to-many relations.</p>
+
+<p class="captioned"><img src="/introdb-lesson/images/many-to-many-3.svg" alt="" width="80%" style="border:0px;" /></p>
+
+<p>Animals is an “association table” because it includes two foreign keys.</p>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT weight, genus, treatment
+FROM animals
+JOIN plots ON animals.plot_id = plots.id
+JOIN species ON animals.species_id = species.id;
+</code></pre>
+</div>
+
+<p>The resulting table could be the basis for the <code class="highlighter-rouge">portal</code> data.frame needed in the R command <code class="highlighter-rouge">lm(weight ~ genus + treatment, data = portal)</code>.</p>
+
+<h2 id="exercise-5">Exercise 5</h2>
+
+<p>In a previous exercise, you created an observers table. Use a <code class="highlighter-rouge">CREATE TABLE</code> statement to make a new association table establishing a many-to-many relation between animals and observers. The resulting table should allow you to record information on which observer(s) caught and measured each animal. (The result will then also record which animals were handled by each observer.)</p>
+
+<p>Hint: Examine the “Script” tab for the animals table to see the keyword “REFERENCES” in action.</p>
+
+<p class="ToS"><a href="#/slides/untidy">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/summary"></a></p>
+
+<h2 id="summary">Summary</h2>
+
+<p class="fragment">Databases are a core element of a centralized workflow, accomodating simultaneous use by all members of a collaborative team.
+We have just skimmed the topic of <strong>concurrency</strong> in database interactions: there is a lot going on under the hood to prevent data corruption.</p>
+
+<p class="fragment">The ability to precisely define keys and data types is the primary database feature that guaranties <strong>reliability</strong>. As you develop scripts for analysis and vizualization, certainty that you’ll never encounter a “NaN” when you expect an Integer will prevent, or help you catch, bugs in your code.</p>
+
+<p class="fragment">The third major feature to motivate databae use, <strong>scaleability</strong>, remains for you to discover. Very large tables can be queried, sorted and combined quickly when the work is done by a powerful relational database management system (RDBMS), such as PostgreSQL.</p>
+
+<p class="ToS"><a href="#/slides/summary">Top of Section</a></p>
+
+<hr />
+
+<p><a name="/slides/md_solutions"></a></p>
+
+<h2 id="solutions">Solutions</h2>
+
+<h3 id="solution-1">Solution 1</h3>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>CREATE TABLE public.species (
+   id   text   NOT NULL   PRIMARY KEY,
+   genus   text NOT NULL,
+   species   text,
+   taxa   text
+);
+</code></pre>
+</div>
+
+<p class="notes"><a href="#exercise-1">Return</a></p>
+
+<h3 id="solution-2">Solution 2</h3>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>CREATE TABLE observers (
+    id integer PRIMARY KEY,
+    name text
+);
+</code></pre>
+</div>
+
+<p class="notes"><a href="#exercise-2">Return</a></p>
+
+<h3 id="solution-3">Solution 3</h3>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT year, month, day, species_id, ROUND(weight * 1000) AS weight_mg
+FROM species;
+</code></pre>
+</div>
+
+<p class="notes"><a href="#exercise-3">Return</a></p>
+
+<h3 id="solution-4">Solution 4</h3>
+
+<table>
+  <tbody>
+    <tr>
+      <td>First Table</td>
+      <td>Second Table</td>
+    </tr>
+    <tr>
+      <td>plots(id)</td>
+      <td>animals(plot_id)</td>
+    </tr>
+    <tr>
+      <td>species(id)</td>
+      <td>animals(species_id)</td>
+    </tr>
+  </tbody>
+</table>
+
+<p class="notes"><a href="#exercise-4">Return</a></p>
+
+<h3 id="solution-5">Solution 5</h3>
+
+<div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>CREATE TABLE captures (
+  observer_id integer REFERENCES observers(id),
+  animal_id integer REFERENCES animals(id)
+);
+</code></pre>
+</div>
+
+<p class="notes"><a href="#exercise-5">Return</a></p>
+
+<p class="ToS"><a href="#/slides/md_solutions">Top of Section</a></p>
+
+<hr />
+
+
+
+	    </div>
+	  </div>
+  </body>
+</html>
