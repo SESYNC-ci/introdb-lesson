@@ -1,8 +1,11 @@
 # Site
 
 title: "Database Principles and Use"
-handouts: worksheet.sql
-tag: v0.0
+handouts:
+ - worksheet.sql
+ - data/portal.sqlite
+ - data/README.md
+tag: v0.1
 lesson: 3
 instructor: Benoît Parmentier
 authors:

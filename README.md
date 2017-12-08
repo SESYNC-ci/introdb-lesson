@@ -10,4 +10,4 @@
 -------------------------------------->
 
 [lesson]: http://sesync-ci.github.io/introdb-lesson
-[slideshow]: http://sesync-ci.github.io/introdb-lesson/instructor
+[slideshow]: http://sesync-ci.github.io/introdb-lesson/slides
