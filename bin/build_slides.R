@@ -12,7 +12,7 @@ opts_knit$set(
     base.url = '{{ site.baseurl }}/')
 opts_chunk$set(
     comment = NA,
-    cache = TRUE,
+    cache = FALSE,
     prompt = TRUE,
     error = FALSE,
     fig.cap = ' ', # whitespace forces .caption after htmlwidget

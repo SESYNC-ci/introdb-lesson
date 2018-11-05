@@ -2,10 +2,9 @@
 
 title: Database Principles and Use
 handouts:
- - worksheet.sql
- - data/portal.sqlite
+ - worksheet.Rmd
  - data/README.md
-tag: v0.2
+tag: v0.3
 lesson: 3
 instructor: Benoît Parmentier
 authors:
@@ -19,16 +18,15 @@ slide_sorter:
   - intro
 #  - features
   - tables
-  - create
+  - server
+#  - create
   - keys
-  - query
   - untidy
 #  - join
 #  - dtype 
 #  - extend
   - summary
-  - md_solutions
-#  - solutions
+#  - exercises
 
 #####################################
 # Only modify content above or risk #

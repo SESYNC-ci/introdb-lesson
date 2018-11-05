@@ -34,14 +34,10 @@ multiple tables.
 Consider for example what you must do to carry out a regression of animal weight
 against plot treatment using the R command:
 
-
-
-~~~r
+```{r, eval = FALSE, title = "{{ site.handouts[0] }}" }
 lm(weight ~ treatment,
    data = portal)
-~~~
-{:.text-document .no-eval title="{{ site.handouts[0] }}"}
-
+```
 
 You need a "data.frame" called `portal` with rows for each animal that also
 includes a "treatment" inferred from "plot_id".
@@ -51,14 +47,10 @@ includes a "treatment" inferred from "plot_id".
 Additionally suppose you want to account for genus in this regression, expanding
 the previous R command to:
 
-
-
-~~~r
+```{r, eval = FALSE, title = "{{ site.handouts[0] }}" }
 lm(weight ~ genus + treatment,
    data = portal)
-~~~
-{:.text-document .no-eval title="{{ site.handouts[0] }}"}
-
+```
 
 You need another column for genus in the `portal` data.frame, inferred from
 "species_id" for each animal and the species table.
@@ -80,7 +72,7 @@ references--that permit table joins:
 The primary key in the first table is referred to multiple times in the foreign
 key of the second table.
 
-![]({{ site.baseurl }}/images/many-to-one-1.svg){: width="80%" style="border:0px;"}
+![]({{ site.baseurl }}/images/many-to-one-1.svg){: width="80%" style="border:0px;box-shadow:none;"}
 {:.captioned}
 
 ===
@@ -88,16 +80,12 @@ key of the second table.
 The SQL keyword "JOIN" matches up two tables in the way dictated by the
 constraint following "ON", duplicating records as necessary.
 
-
-
-~~~sql
+```{sql, connection = con, output.var = 'portal', title = "{{ site.handouts[0] }}"}
 SELECT weight, treatment
 FROM animals
 JOIN plots
   ON animals.plot_id = plots.id;
-~~~
-
-
+```
 
 The resulting table could be the basis for the `portal` data.frame needed in the
 R command `lm(weight ~ treatment, data = portal)`.
@@ -118,20 +106,19 @@ Animals is an "association table" because it includes two foreign keys.
 
 ===
 
-
-
-~~~sql
+```{sql, connection = con, output.var = 'portal', title = "{{ site.handouts[0] }}"}
 SELECT weight, genus, treatment
 FROM animals
 JOIN plots
   ON animals.plot_id = plots.id
 JOIN species
   ON animals.species_id = species.id;
-~~~
-
-
+```
 
 The resulting table could be the basis for the `portal` data.frame needed in the
 R command `lm(weight ~ genus + treatment, data = portal)`.
 
-
+```{r cleanup, echo = FALSE, results = 'hide'}
+dbRemoveTable(con, 'observers')
+dbDisconnect(con)
+```

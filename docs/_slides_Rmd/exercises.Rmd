@@ -1,0 +1,134 @@
+---
+---
+
+## Exercises
+
+===
+
+### Exercise 1
+  
+Study the "Columns" and "Script" tabs for the species table. Pick a field that
+is currently allowed to be null, and guess how you would write a script
+beginning with `CREATE TABLE species` to prohibit null values in the database.
+
+===
+
+## Exercise 3
+
+Write a query that returns the year, month, day, species id, and weight in mg of each animal.
+
+===
+
+## Exercise 4
+
+Examine the primary and foreign keys on the three tables by checking the "Columns" and "Constraints" tabs. Identify all the one-to-many relationships.
+
+===
+
+## Exercise 5
+
+In a previous exercise, you created an observers table. Use a `CREATE TABLE` statement to make a new association table establishing a many-to-many relation between animals and observers. The resulting table should allow you to record information on which observer(s) caught and measured each animal. (The result will then also record which animals were handled by each observer.)
+
+Hint: Examine the “Script” tab for the animals table to see the keyword “REFERENCES” in action.
+
+===
+
+## Solutions
+
+===
+
+### Solution 1
+
+~~~
+CREATE TABLE public.species (
+   id   text   NOT NULL   PRIMARY KEY,
+   genus   text NOT NULL,
+   species   text,
+   taxa   text
+);
+~~~
+{:.text-document title="SQL Worksheet"}
+
+[Return](#exercise-1)
+{:.notes}
+
+===
+
+### Solution 2
+
+~~~
+CREATE TABLE observers (
+    id integer PRIMARY KEY,
+    name text
+);
+~~~
+{:.text-document title="SQL Worksheet"}
+
+[Return](#exercise-2)
+{:.notes}
+
+===
+
+### Solution 3
+
+~~~
+SELECT year, month, day, species_id, ROUND(weight * 1000) AS weight_mg
+FROM species;
+~~~
+{:.text-document title="SQL Worksheet"}
+
+[Return](#exercise-3)
+{:.notes}
+
+===
+
+### Solution 4
+
+| First Table | Second Table        |
+| plots(id)   | animals(plot_id)    |
+| species(id) | animals(species_id) |
+
+[Return](#exercise-4)
+{:.notes}
+
+===
+
+### Solution 5
+
+~~~
+CREATE TABLE captures (
+  observer_id integer REFERENCES observers(id),
+  animal_id integer REFERENCES animals(id)
+);
+~~~
+{:.text-document title="SQL Worksheet"}
+
+[Return](#exercise-5)
+{:.notes}
+
+===
+
+## Solution 1
+
+```{r title="lesson-3.R"}
+df <- dbGetQuery(con, "select species_id, taxa, genus
+                       from species")
+```
+
+[Return](#exercise-1)
+{:.notes}
+
+===
+
+## Solution 2
+
+```{r title="lesson-3.R"}
+df <- dbGetQuery(con, "select weight, month, plot_type, taxa
+                       from surveys
+                       join plots on surveys.plot_id = plots.plot_id
+                       join species on surveys.species_id = species.species_id
+                       where weight is not null")
+```
+
+[Return](#exercise-2)
+{:.notes}

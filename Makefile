@@ -50,7 +50,7 @@ $(subst _pmd,,$(SLIDES_PMD)): docs/_slides/%.md: docs/_slides_pmd/%.md
 # targets keep jekyll site up to date
 preview: slides | docs/_site
 export GEM_HOME=$(HOME)/.gem
-SITE = $(shell find ./docs/ ! -name _site)
+SITE = $(shell find docs/ ! -path "docs/_site*")
 docs/_site: $(SITE) | docs/Gemfile.lock
 	pushd docs && bundle exec jekyll build --baseurl=/p/$(PORT) && popd
 	touch docs/_site
