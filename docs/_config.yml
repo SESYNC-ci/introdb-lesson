@@ -2,7 +2,7 @@
 
 title: Database Principles and Use
 handouts:
- - worksheet.Rmd
+ - worksheet.R
  - data/README.md
 tag: v0.3
 lesson: 3
