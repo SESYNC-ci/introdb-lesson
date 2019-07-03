@@ -1,45 +1,17 @@
-# Site
+# Build Configuration
 
-title: Database Principles and Use
-handouts:
- - worksheet.R
- - data/README.md
-tag: v0.3
-lesson: 3
-instructor: Benoît Parmentier
-authors:
-  - Ian Carroll
-  - Mary Shelly
-
-# Slides
-
-slide_sorter:
-  - goals
-  - intro
-#  - features
-  - tables
-  - server
-#  - create
-  - keys
-  - untidy
-#  - join
-#  - dtype 
-#  - extend
-  - summary
-#  - exercises
-
-#####################################
-# Only modify content above or risk #
-# merge conflicts with upstream.    #
-#####################################
-
-# Style
-
-styleurl: https://cdn.rawgit.com/sesync-ci/lesson-style/v2.0/docs
-reveal: https://cdn.rawgit.com/hakimel/reveal.js/3.5.0
-
-# Jekyll
-
-markdown: kramdown
+markdown: kramdown 
 collections:
-  - slides
+  slides:
+    output: false
+  views:
+    output: true
+    permalink: /:name/
+  archive:
+    output: true
+    permalink: /:year/:month/:day/:title:output_ext
+
+# Asset Location
+
+imageurl: /assets/images/
+styleurl: /assets/css/
