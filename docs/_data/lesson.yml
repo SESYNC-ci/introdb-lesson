@@ -1,0 +1,24 @@
+title: Database Principles and Use
+handouts:
+ - worksheet.R
+ - data/README.md
+tag: v0.3
+lesson: 3
+instructor: Benoît Parmentier
+authors:
+  - Ian Carroll
+  - Mary Shelly
+sorter:
+  - goals
+  - intro
+#  - features
+  - tables
+  - server
+#  - create
+  - keys
+  - untidy
+#  - join
+#  - dtype 
+#  - extend
+  - summary
+#  - exercises

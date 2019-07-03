@@ -45,7 +45,7 @@ The first step from the RStudio client is creating a connection object that
 verifies the given information by opening up a channel to the database
 server.
 
-```{r, title = "{{ site.handouts[0] }}", eval = FALSE}
+```{r, handout = 0, eval = FALSE}
 library(DBI)
 con <- dbConnect(RPostgres::Postgres(),
   host = ...,
@@ -79,7 +79,7 @@ dbListFields(con, 'species')
 Read an entire database table into an R data frame with `dbReadTable`, or if you
 prefer "tidyverse" functions, use the [dplyr](){:.rlib} `tbl` function.
 
-```{r, title = "{{ site.handouts[0] }}", message=FALSE}
+```{r, handout = 0, message=FALSE}
 library(dplyr)
 species <- tbl(con, 'species')
 ```
@@ -92,7 +92,7 @@ species
 The `dbWriteTable` function provides a mechanism for uploading data, as long as
 the user specified in the connection object has permission to create tables.
 
-```{r, title = "{{ site.handouts[0] }}"}
+```{r, handout = 0}
 df <- data.frame(
   id = c(1, 2),
   name = c('Alice', 'Bob')

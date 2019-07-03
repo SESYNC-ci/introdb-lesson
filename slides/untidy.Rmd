@@ -34,7 +34,7 @@ multiple tables.
 Consider for example what you must do to carry out a regression of animal weight
 against plot treatment using the R command:
 
-```{r, eval = FALSE, title = "{{ site.handouts[0] }}" }
+```{r, eval = FALSE, handout = 0 }
 lm(weight ~ treatment,
    data = portal)
 ```
@@ -47,7 +47,7 @@ includes a "treatment" inferred from "plot_id".
 Additionally suppose you want to account for genus in this regression, expanding
 the previous R command to:
 
-```{r, eval = FALSE, title = "{{ site.handouts[0] }}" }
+```{r, eval = FALSE, handout = 0 }
 lm(weight ~ genus + treatment,
    data = portal)
 ```
@@ -72,7 +72,7 @@ references--that permit table joins:
 The primary key in the first table is referred to multiple times in the foreign
 key of the second table.
 
-![]({{ site.baseurl }}/images/many-to-one-1.svg){: width="80%" style="border:0px;box-shadow:none;"}
+![]({% include asset.html path="images/many-to-one-1.svg" %}){: width="80%" style="border:0px;box-shadow:none;"}
 {:.captioned}
 
 ===
@@ -80,7 +80,7 @@ key of the second table.
 The SQL keyword "JOIN" matches up two tables in the way dictated by the
 constraint following "ON", duplicating records as necessary.
 
-```{sql, connection = con, output.var = 'portal', title = "{{ site.handouts[0] }}"}
+```{sql, connection = con, output.var = 'portal', handout = 0}
 SELECT weight, treatment
 FROM animals
 JOIN plots
@@ -99,14 +99,14 @@ from the second table **and** *vice versa*. A many-to-many relationship is
 induced by the existance of an "association table" involved in **two**
 one-to-many relations.
 
-![]({{ site.baseurl }}/images/many-to-many-3.svg){: width="80%" style="border:0px;box-shadow:none;"}
+![]({% include asset.html path="images/many-to-many-3.svg" %}){: width="80%" style="border:0px;box-shadow:none;"}
 {:.captioned}
 
 Animals is an "association table" because it includes two foreign keys.
 
 ===
 
-```{sql, connection = con, output.var = 'portal', title = "{{ site.handouts[0] }}"}
+```{sql, connection = con, output.var = 'portal', handout = 0}
 SELECT weight, genus, treatment
 FROM animals
 JOIN plots

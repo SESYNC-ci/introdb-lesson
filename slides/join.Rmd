@@ -16,7 +16,7 @@ There are two kinds of table relationships -- uses of primary and foreign key re
 
 ### One-To-Many Relationship
 
-![]({{ site.baseurl }}/images/many-to-one.svg){: width="80%"}
+![]({% include asset.html path="images/many-to-one.svg" %}){: width="80%"}
 
 ===
 
@@ -34,7 +34,7 @@ str(df)
 
 ### Many-To-Many Relationship
 
-![]({{ site.baseurl }}/images/many-to-many-2.svg){: width="80%"}
+![]({% include asset.html path="images/many-to-many-2.svg" %}){: width="80%"}
 
 ## Exercise 2
 
