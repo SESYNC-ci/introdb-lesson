@@ -54,7 +54,7 @@ con <- dbConnect(RPostgres::Postgres(),
   dbname = ...,
   user = ...)
 ~~~
-{:.text-document .no-eval title="{{ site.handouts[0] }}"}
+{:.text-document .no-eval title="{{ site.data.lesson.handouts[0] }}"}
 
 
 
@@ -103,7 +103,7 @@ prefer "tidyverse" functions, use the [dplyr](){:.rlib} `tbl` function.
 library(dplyr)
 species <- tbl(con, 'species')
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:.text-document title="{{ site.data.lesson.handouts[0] }}"}
 
 
 
@@ -148,7 +148,7 @@ df <- data.frame(
 dbWriteTable(con, 'observers', df,
              append = TRUE)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:.text-document title="{{ site.data.lesson.handouts[0] }}"}
 
 
 ===

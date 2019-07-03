@@ -1,3 +1,6 @@
+---
+---
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -7,11 +10,11 @@
 <title>Database Principles and Use</title>
 <meta name="description" content="First look at relational databases.">
 <link rel="canonical" href="https://sesync-ci.github.io/introdb-lesson/course/archive.html">
-<link rel="stylesheet" href="/introdb-lesson/css/default.css">
-<link rel="stylesheet" href="/introdb-lesson/css/static.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sesync-ci/lesson-style@v3.0/docs/assets/css/default.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sesync-ci/lesson-style@v3.0/docs/assets/css/static.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML" type="text/javascript"></script>
 
-	  <link rel="stylesheet" href="https://cdn.rawgit.com/sesync-ci/lesson-style/v1.2/docs/css/static.css">
+	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sesync-ci/lesson-style@v1.2/docs/css/static.css">
   </head>
   <body>
 	  <div class="page-content">
@@ -86,25 +89,25 @@
 
 <h2 id="the-portal-project">The Portal Project</h2>
 
-<p class="captioned"><img src="/introdb-lesson/images/portal-oct-07-15.jpg" alt="" width="40%" /><br />
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/sesync-ci/introdb-lesson@v0.3/docs/images/portal-oct-07-15.jpg" alt="" width="40%" /><br />
 <em>Credit: <a href="https://portalproject.wordpress.com">The Portal Project</a></em></p>
 
 <p>The Portal Project is a long-term ecological study being conducted near Portal, AZ.
 Since 1977, the site has been a primary focus of research on interactions among rodents, ants and plants and their respective responses to climate.</p>
 
-<p class="captioned"><img src="/introdb-lesson/images/portalview.jpg" alt="" width="50%" /><br />
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/sesync-ci/introdb-lesson@v0.3/docs/images/portalview.jpg" alt="" width="50%" /><br />
 <em>Credit: <a href="https://portalproject.wordpress.com">The Portal Project</a></em></p>
 
 <p>The research site consists of many plots – patches of the Arizona desert that are intensively manipulated and repeatedly surveyed.
 The plots have some fixed characteristics, such as the type of manipulation, geographic location, aspect, etc.</p>
 
-<p class="captioned"><img src="/introdb-lesson/images/img_19771.jpg" alt="" width="40%" /><br />
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/sesync-ci/introdb-lesson@v0.3/docs/images/img_19771.jpg" alt="" width="40%" /><br />
 <em>Credit: <a href="https://portalproject.wordpress.com">The Portal Project</a></em></p>
 
 <p>The plots have a lot of dynamic characteristics, and those changes are recorded in repeated surveys.
 In particular, the animals captured during each survey are identified to species, weighed, and measured.</p>
 
-<p class="captioned"><img src="/introdb-lesson/images/gkr2.jpg" alt="" width="50%" /><br />
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/sesync-ci/introdb-lesson@v0.3/docs/images/gkr2.jpg" alt="" width="50%" /><br />
 <em>Credit: <a href="https://portalproject.wordpress.com">The Portal Project</a></em></p>
 
 <p>Data from the Portal project is recorded in a relational database designed for reliable storage &amp; rapid access to the bounty of information produced by this long-term ecological experiment. This lesson uses the real data, that has been analyzed in over 100 publications.</p>
@@ -185,7 +188,7 @@ The client we will use to communicate with the server is a browser-based applica
 
 <p>Open PostgreSQL Studio and login with the connection parameters:</p>
 
-<p class="captioned"><img src="/introdb-lesson/images/pgstudio-login-1.png" alt="" width="40%" /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/sesync-ci/introdb-lesson@v0.3/docs/images/pgstudio-login-1.png" alt="" width="40%" /></p>
 
 <p class="notes">A more typical database host would be a URL or IP address. Using “localhost” is unusual in that the server is not typically on the same system as the client.</p>
 
@@ -393,7 +396,7 @@ Commands use intuitive English words but can be strung together and nested in po
 <h2 id="basic-queries">Basic queries</h2>
 
 <p>Let’s write a SQL query that selects only the year column from the animals
-table. Select the <img src="/introdb-lesson/images/sql-button.png" alt="" style="vertical-align:middle" /> button, paste in and run the following script.</p>
+table. Select the <img src="https://cdn.jsdelivr.net/gh/sesync-ci/introdb-lesson@v0.3/docs/images/sql-button.png" alt="" style="vertical-align:middle" /> button, paste in and run the following script.</p>
 
 <div class="text-document highlighter-rouge" title="SQL Worksheet"><pre class="highlight"><code>SELECT year FROM animals;
 </code></pre>
@@ -581,7 +584,7 @@ The SQL “JOIN” clause lets you create records with fields from multiple tabl
 
 <p>The primary key in the first table is referred to multiple times in the foreign key of the second table.</p>
 
-<p class="captioned"><img src="/introdb-lesson/images/many-to-one-1.svg" alt="" width="80%" style="border:0px;" /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/sesync-ci/introdb-lesson@v0.3/docs/images/many-to-one-1.svg" alt="" width="80%" style="border:0px;" /></p>
 
 <h2 id="exercise-4">Exercise 4</h2>
 
@@ -601,7 +604,7 @@ JOIN plots ON animals.plot_id = plots.id;
 
 <p>Each primary key from the first table may relate to any number of primary keys from the second table, and <em>vice versa</em>.  eachother any number of times. A many-to-many relationship is induced by the existance of an “association table” involved in <strong>two</strong> one-to-many relations.</p>
 
-<p class="captioned"><img src="/introdb-lesson/images/many-to-many-3.svg" alt="" width="80%" style="border:0px;" /></p>
+<p class="captioned"><img src="https://cdn.jsdelivr.net/gh/sesync-ci/introdb-lesson@v0.3/docs/images/many-to-many-3.svg" alt="" width="80%" style="border:0px;" /></p>
 
 <p>Animals is an “association table” because it includes two foreign keys.</p>
 

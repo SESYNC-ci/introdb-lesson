@@ -40,7 +40,7 @@ against plot treatment using the R command:
 lm(weight ~ treatment,
    data = portal)
 ~~~
-{:.text-document .no-eval title="{{ site.handouts[0] }}"}
+{:.text-document .no-eval title="{{ site.data.lesson.handouts[0] }}"}
 
 
 You need a "data.frame" called `portal` with rows for each animal that also
@@ -57,7 +57,7 @@ the previous R command to:
 lm(weight ~ genus + treatment,
    data = portal)
 ~~~
-{:.text-document .no-eval title="{{ site.handouts[0] }}"}
+{:.text-document .no-eval title="{{ site.data.lesson.handouts[0] }}"}
 
 
 You need another column for genus in the `portal` data.frame, inferred from

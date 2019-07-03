@@ -44,7 +44,7 @@ dbCreateTable(con, 'observers', list(
   name = 'text'
 ))
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:.text-document title="{{ site.data.lesson.handouts[0] }}"}
 
 
 ===
@@ -61,7 +61,7 @@ df <- data.frame(
 dbWriteTable(con, 'observers', df,
              append = TRUE)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:.text-document title="{{ site.data.lesson.handouts[0] }}"}
 
 
 
@@ -98,7 +98,7 @@ df <- data.frame(
 dbWriteTable(con, 'observers', df,
              append = TRUE)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:.text-document title="{{ site.data.lesson.handouts[0] }}"}
 
 
 ~~~
@@ -144,7 +144,7 @@ df <- data.frame(
 dbWriteTable(con, 'animals', df,
              append = TRUE)
 ~~~
-{:.text-document title="{{ site.handouts[0] }}"}
+{:.text-document title="{{ site.data.lesson.handouts[0] }}"}
 
 
 ~~~
