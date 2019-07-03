@@ -3,7 +3,7 @@
 
 ## The Portal Project
 
-![]({{ site.baseurl }}/images/portal-oct-07-15.jpg){: width="40%"}  
+![]({% include asset.html path="images/portal-oct-07-15.jpg" %}){: width="40%"}  
 *Credit: [The Portal Project](https://portalproject.wordpress.com)*
 {:.captioned}
 
@@ -13,7 +13,7 @@ The Portal Project is a long-term ecological study being conducted near Portal,
 AZ. Since 1977, the site has been a primary focus of research on interactions
 among rodents, ants and plants and their respective responses to climate.
 
-![]({{ site.baseurl }}/images/portalview.jpg){: width="50%"}  
+![]({% include asset.html path="images/portalview.jpg" %}){: width="50%"}  
 *Credit: [The Portal Project](https://portalproject.wordpress.com)*
 {:.captioned}
 
@@ -24,7 +24,7 @@ are intensively manipulated and repeatedly surveyed. The plots have some fixed
 characteristics, such as the type of manipulation, geographic location, aspect,
 etc.
 
-![]({{ site.baseurl }}/images/img_19771.jpg){: width="40%"}  
+![]({% include asset.html path="images/img_19771.jpg" %}){: width="40%"}  
 *Credit: [The Portal Project](https://portalproject.wordpress.com)*
 {:.captioned}
 
@@ -34,7 +34,7 @@ The plots have a lot of dynamic characteristics, and those changes are recorded
 in repeated surveys. In particular, the animals captured during each survey are
 identified to species, weighed, and measured.
 
-![]({{ site.baseurl }}/images/gkr2.jpg){: width="50%"}  
+![]({% include asset.html path="images/gkr2.jpg" %}){: width="50%"}  
 *Credit: [The Portal Project](https://portalproject.wordpress.com)*
 {:.captioned}
 

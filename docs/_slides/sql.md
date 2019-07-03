@@ -11,7 +11,7 @@ Commands use intuitive English words but can be strung together and nested in po
 ## Basic queries
 
 Let’s write a SQL query that selects only the year column from the surveys
-table. Select the ![]({{ site.baseurl }}/images/sql-button.png) button, paste in and run the following script.
+table. Select the ![]({% include asset.html path="images/sql-button.png" %}) button, paste in and run the following script.
 
 ```
 SELECT year FROM surveys;

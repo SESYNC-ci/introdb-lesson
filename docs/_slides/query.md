@@ -13,7 +13,7 @@ We have used the "CREATE TABLE" and "INSERT" statements, but most SQL is written
 ## Basic queries
 
 Let’s write a SQL query that selects only the year column from the animals
-table. Select the ![]({{ site.baseurl }}/images/sql-button.png){:style="vertical-align:middle"} button, paste in and run the following script.
+table. Select the ![]({% include asset.html path="images/sql-button.png" %}){:style="vertical-align:middle"} button, paste in and run the following script.
 
 ```
 SELECT year FROM animals;

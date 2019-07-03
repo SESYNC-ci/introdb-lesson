@@ -80,7 +80,7 @@ references--that permit table joins:
 The primary key in the first table is referred to multiple times in the foreign
 key of the second table.
 
-![]({{ site.baseurl }}/images/many-to-one-1.svg){: width="80%" style="border:0px;"}
+![]({% include asset.html path="images/many-to-one-1.svg" %}){: width="80%" style="border:0px;"}
 {:.captioned}
 
 ===
@@ -111,7 +111,7 @@ from the second table **and** *vice versa*. A many-to-many relationship is
 induced by the existance of an "association table" involved in **two**
 one-to-many relations.
 
-![]({{ site.baseurl }}/images/many-to-many-3.svg){: width="80%" style="border:0px;box-shadow:none;"}
+![]({% include asset.html path="images/many-to-many-3.svg" %}){: width="80%" style="border:0px;box-shadow:none;"}
 {:.captioned}
 
 Animals is an "association table" because it includes two foreign keys.
